@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <style>
+        
+        .Container {
+            width: 50%;
+            position: absolute;
+        }
+        
+        </style>
+    </head>
+    <body>
+        
+        <div class="Container" id="inst">
+            <p><br></p>
+            <p><br></p>
+            <p><br></p>
+            <p><br></p>
+            <p><br></p>
+            <p><span id="t1"></span></p>
+            <p><br></p>
+            <p><br></p>
+        </div>
+        
+        <script>
+            "use strict";
+            
+            // Screen size
+            const scWidth = window.parent.screen.width;
+            const scHeight = window.parent.screen.height - 200;
+            
+            var inst = document.getElementById('inst');
+            var text1 = document.getElementById('t1');
+
+
+            function showPage() {
+                // Minimize the likelihood of pressing the back page/refresh button on browsers
+                var flagBackpage1 = localStorage.getItem("flagBackpage1"); 
+                if (flagBackpage1 == null) {
+                    flagBackpage1 = 1;
+                    localStorage.setItem("flagBackpage1", flagBackpage1); 
+                }
+                
+
+                inst.style.display = "block";
+                inst.style.left = (scWidth - inst.clientWidth) / 2 + "px";
+                
+                text1.innerHTML = 'As stated in the instructions, this HIT closed because you pressed the “back page” or "refresh" button. You did not earn payment. You may close your web browser.';
+            }
+            showPage()
+        
+        </script>
+    </body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <style>
+        
+        .Container {
+            width: 50%;
+            position: absolute;
+        }
+        
+        </style>
+    </head>
+    <body>
+        
+        <div class="Container" id="inst">
+            <p><br></p>
+            <p><br></p>
+            <p><br></p>
+            <p><span id="t1"></span></p>
+            <p><span id="t2"></span></p>
+        	<p><span id="t3a"></span><span id="t3b"></span><span id="t3c"></span></span><span id="t3d"></span></p>
+        	<p><span id="t3e"></span><span id="t3f"></span><span id="t3g"></span></p>
+            <p><span id="t4"></span></p>
+            <p><span id="t5"></span></p>
+            <p><br></p>
+            <p><br></p>
+        </div>
+        
+        <script>
+            "use strict";
+            
+            // Screen size
+            const scWidth = window.parent.screen.width;
+            const scHeight = window.parent.screen.height - 200;
+            
+            var dollar = 0;
+            var code = 0;
+
+            var inst = document.getElementById('inst');
+            var text1 = document.getElementById('t1');
+            var text2 = document.getElementById('t2');
+            var text3a = document.getElementById('t3a');
+            var text3b = document.getElementById('t3b');
+            var text3c = document.getElementById('t3c');
+            var text3d = document.getElementById('t3d');
+            var text3e = document.getElementById('t3e');
+            var text3f = document.getElementById('t3f');
+            var text3g = document.getElementById('t3g');
+            var text4 = document.getElementById('t4');
+            var text5 = document.getElementById('t5');
+
+            function showPage() {
+                dollar = sessionStorage.getItem("dollar");
+                if (dollar == null) {
+                    dollar = 0;
+                }
+                code = sessionStorage.getItem("code");
+                if (code == null) {
+                    code = 0;
+                }
+
+                inst.style.display = "block";
+                inst.style.left = (scWidth - inst.clientWidth) / 2 + "px";
+                
+                text1.innerHTML = "Overall, you earned US$" + dollar + " for participating in this HIT.";
+                text2.innerHTML = "Your code for payment is: " + code;
+                text2.style.fontWeight = "bold";
+                text3a.innerHTML = "To receive payment, please enter the ";
+                text3b.innerHTML = "PAYMENT CODE ";
+                text3b.style.fontWeight = "bold";
+                text3c.innerHTML = "(NOT your Worker ID)"
+                text3c.style.fontWeight = "bold";
+                text3c.style.color = "red";
+                text3d.innerHTML = " on the MTurk website.";
+                text3e.innerHTML = "You ";
+                text3f.innerHTML = "will NOT be paid ";
+                text3f.style.fontWeight = "bold";
+                text3g.innerHTML = "if you enter your Worker ID!";
+                text4.innerHTML = "Once you’ve navigated back to the MTurk website, you will see a place to enter the payment code — it is located below the link to the experiment."
+                text5.innerHTML = "Thanks for participating!";
+            }
+            showPage()
+        
+        </script>
+    </body>
+</html>

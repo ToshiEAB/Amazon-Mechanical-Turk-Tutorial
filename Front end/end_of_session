@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <style>
+        
+        .Container {
+            width: 50%;
+            position: relative;
+        }
+        
+        </style>
+    </head>
+    <body>
+        
+        <div class="Container" id="inst">
+            <p><br></p>
+            <p><br></p>
+            <p><br></p>
+            <p><span id="t1" style="font-size:16px;margin-left:0%;margin-right:0%;"></span></p>
+            <p><span id="t2" style="font-size:16px;margin-left:0%;margin-right:0%;"></span></p>
+        	<p><span id="t3" style="font-size:16px;margin-left:0%;margin-right:0%;"></span></p>
+        	<input type="button" id="proceed" style="width:180px;background-color:yellow;padding:10px;font-size:24px;margin-left:40%;margin-right:10%;" value="Proceed">
+            <p><br></p>
+            <p><br></p>
+        </div>
+        
+        <script>
+            "use strict";
+            
+            // Screen size
+            const scWidth = window.parent.screen.width;
+            const scHeight = window.parent.screen.height - 200;
+            
+            var filecount = 0;
+            var ID = 0;
+            var GROUP = 0;
+            var code = 0;
+            var basePay = 0;
+            var netGain = 0;
+            var dollarPerPoint = 0;
+            var dollar = 0;
+
+            var inst = document.getElementById('inst');
+            var text1 = document.getElementById('t1');
+            var text2 = document.getElementById('t2');
+            var text3 = document.getElementById('t3');
+            var proceed = document.getElementById('proceed');
+            
+            proceed.addEventListener('mousedown',function() {
+                sessionStorage.setItem("filecount", filecount);
+                sessionStorage.setItem("ID", ID);
+                sessionStorage.setItem("GROUP", GROUP);
+                sessionStorage.setItem("dollar", dollar); 
+                sessionStorage.setItem("code", code); 
+                window.location.replace("https:___________.com/survey/"); // ***** Change this to your URL for a survey page)
+            });
+            
+            function showPage() {
+
+                filecount = sessionStorage.getItem("filecount");
+                if (filecount == null) {
+                    filecount = 0;
+                }
+                
+                ID = sessionStorage.getItem("ID");
+                if (ID == null) {
+                    ID = -1;
+                }
+                
+                GROUP = sessionStorage.getItem("GROUP");
+                if (GROUP == null) {
+                    GROUP = -1;
+                }
+                
+                code = sessionStorage.getItem("code");
+                if (code == null) {
+                    code = 0;
+                }
+                
+                basePay = sessionStorage.getItem("basePay");
+                if (basePay == null) {
+                    basePay = 0;
+                } else {
+                    basePay = parseFloat(basePay); 
+                }
+                
+                netGain = sessionStorage.getItem("netGain");
+                if (netGain == null) {
+                    netGain = 0;
+                }
+                
+                dollarPerPoint = sessionStorage.getItem("dollarPerPoint");
+                if (dollarPerPoint == null) {
+                    dollarPerPoint = 0;
+                }
+                
+                dollar = netGain * dollarPerPoint + basePay;
+                dollar = dollar.toFixed(2); // Decimal points of 2
+                var bP = basePay.toFixed(2);
+                var pD = netGain * dollarPerPoint;
+                pD = pD.toFixed(2);
+                
+                
+                inst.style.left = (scWidth - inst.clientWidth) / 2 + "px";
+                text1.innerHTML = "Press the PROCEED button below to continue to a survey.";
+                text2.innerHTML = "After completing the survey, you will receive the code for payment and earn US$" + dollar + " for participating in this HIT.";
+                text3.innerHTML = "You earned US$" + bP + " for completing the HIT and US$" + pD + " based on points earned.";
+            }
+            showPage();
+        
+        
+        </script>
+    </body>
+</html>

@@ -1,0 +1,9 @@
+1) Install the "CSS & JavaScript Toolbox Plus" plugin on your WordPress dashboard. (https://css-javascript-toolbox.com/css-javascript-toolbox-plus/)
+
+2) Copy the content of each program here (written in JavaScript and CSS in the HTML format) and paste it to a editting section on the plugin.
+
+3) Save the editting section on the plugin as "PHP" regardless of whether the program is written in JavaScirpt, CSS, or PHP
+
+4) Don't forget to change URLs. These URLs are indicated by 5-consecutive asterisks (i.e., *****)
+
+5) You may need to delete my comments in these programs -- The plugin has a word limit.

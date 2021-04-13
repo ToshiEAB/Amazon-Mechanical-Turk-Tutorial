@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/platform/1.3.5/platform.min.js"></script>
+        <meta charset="utf-8">
+        <style>
+        
+        .Container {
+            width: 50%;
+            position: absolute;
+            -ms-user-select: none;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+        }
+        
+        .pdf {
+            width: 50%;
+            position: absolute;
+        }
+        
+        .form-a-container,
+        .form-b-container {
+            float:left;
+            width:50%;
+        }
+
+        .captchaContainer {
+            margin : 0 auto;
+            width: 450px;
+            height: 150px;
+            position: absolute;
+        }
+        
+        #cpatchaTextBox {
+            height: 50px;
+            width: 300px;
+            font-size: 12pt;
+        }
+        
+        #submitButton {
+            height: 50px;
+            width: 100px;
+            font-size: 14pt;
+            background-color: yellow;
+        }
+                
+        </style>
+    </head>
+    <body>
+        <div class="pdf" id = "inst0">
+            <p><br></p>
+            <p><br></p>
+            
+            <!-- ***** This assumes that you uploaded your consent form (.pdf file) to the "images" directory under the directory for the Luxech theme -->
+            <embed src="/wp-content/themes/luxech/images/yourConsentForm.pdf" alt="" type="application/pdf" width="750" height="1000"> 
+            
+            <div class="form-container">
+                <div class="form-a-container">
+                    <form action="">
+                        <input type="button" id="agree" style="width:180px;background-color:yellow;padding:10px;font-size:24px;margin-left:40%;margin-right:10%;" value="Agree">
+                    </form>
+                </div>
+                <div class="form-b-container">
+                    <form action="">
+                        <input type="button" id="disagree" style="width:180px;background-color:yellow;padding:10px;font-size:24px;margin-left:40%;margin-right:10%;" value="Disagree">
+                        <p><br></p>
+                        <p><br></p>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="Container" id="inst1">
+            <p><br></p>
+            <p><br></p>
+            <p><span id="t1"></span></p>
+            <p><br></p>
+        	<p><span id="t3"></span></p>
+        	<input type="button" id="proceed1" style="width:180px;background-color:yellow;padding:10px;font-size:24px;margin-left:40%;margin-right:10%;" value="Proceed">
+            <p><br></p>
+            <p><br></p>
+        </div>
+        
+        <div class="Container" id="inst2">
+            <p><br></p>
+            <p><br></p>
+            <p><span id="t4"></span></p>
+            <p><span id="t5"></span></p>
+        	<p><span id="t6"></span></p>
+            <p><span id="t7"></span></p>
+        	<p><span id="t8"></span></p>
+        	<p><br></p>
+        	<p><span id="t9"></span></p>
+        	<input type="button" id="proceed2" style="width:180px;background-color:yellow;padding:10px;font-size:24px;margin-left:40%;margin-right:10%;" value="Proceed">
+            <p><br></p>
+            <p><br></p>
+        </div>
+        
+        <div class="Container" id="inst3">
+            <p><br></p>
+            <p><br></p>
+            <p><span id="t10"></span></p>
+            <p><br></p>
+            <p><br></p>
+        </div>
+        
+        <div class='captchaContainer' id='cap'>
+            <form onsubmit='validateCaptcha()'>
+                <div id='captcha'></div>
+                <input type='text' placeholder='Enter the six characters above' id='cpatchaTextBox'/>
+                <button type='submit' id='submitButton'>Submit</button>
+            </form>
+        </div>
+        
+        <script>
+            "use strict";
+            
+            // Screen size
+            const scWidth = window.parent.screen.width;
+            const scHeight = window.parent.screen.height - 200;
+            
+            //var ID = 0;
+
+            // Page 0 (PDF)
+            var inst0 = document.getElementById('inst0');
+            var btnAgree = document.getElementById('agree');
+            var btnDisagree = document.getElementById('disagree');
+            
+            // CAPTCHA page
+            var cap = document.getElementById('cap');
+            var code; 
+
+            // Page 1
+            var inst1 = document.getElementById('inst1');
+            var text1 = document.getElementById('t1');
+            var text3 = document.getElementById('t3');
+            var proceed1 = document.getElementById('proceed1');
+            
+            // Page 2
+            var inst2 = document.getElementById('inst2');
+            var text4 = document.getElementById('t4');
+            var text5 = document.getElementById('t5');
+            var text6 = document.getElementById('t6');
+            var text7 = document.getElementById('t7');
+            var text8 = document.getElementById('t8');
+            var text9 = document.getElementById('t9');
+            var proceed2 = document.getElementById('proceed2');
+            
+            // Page 3 (Terminate)
+            var text10 = document.getElementById('t10');
+            
+            // 'mouseup' instead of 'mousedown' for preventing multiple accesses to getRandomNumber.php
+            proceed2.addEventListener('mouseup',function() {
+                getRandomNumber();
+            });
+            
+            proceed1.addEventListener('mousedown',function() {
+                inst1.style.display = "none";
+                showPage2();
+            });
+            
+            disagree.addEventListener('mousedown',function() {
+                var result = confirm('Are you sure you want to quit this HIT?');
+                if(result) {
+                    showPage3();
+                }
+            });
+            
+            agree.addEventListener('mousedown',function() {
+                
+                // Check OS
+                var os = String(platform.os);
+                var Windows = os.substr(0,7);
+                var OS_X = os.substr(0,4);
+                var macOS = os.substr(0,5);
+                var Mac_OS = os.substr(0,6);
+                
+                if (Windows == 'Windows' || OS_X == 'OS X' || macOS == 'macOS' || Mac_OS == 'Mac OS') {
+                     // Check browser
+                    switch (platform.name) {
+                        case 'Chrome':
+                        case 'Firefox':
+                        case 'Microsoft Edge':
+                            showCaptcha();
+                            break;
+                        default:
+                            alert('You are using a browser that is incompatible with this HIT. Please close this page and instead use Google Chrome, Mozilla Firefox, or Microsoft Edge.');
+                            break;
+                    }
+                } else {
+                   alert('You are using a device that is incompatible with this HIT. Please close this page and instead use a Windows or Mac computer.');
+                }
+            });
+            
+            function getRandomNumber() {
+                text9.innerHTML = 'Please wait...';
+                proceed2.style.display = "none";
+
+                // Call a PHP function
+                $.ajax({
+                    type: "POST",
+                    url: "/wp-content/themes/luxech/random-assignment/getRandomNumber.php", // ***** This assumes that you uploaded "getRandomNumber.php" to the "random-assignment" directory under the directory for the Luxech theme
+                    data: {},
+                    success: function(message) {
+                        var text;
+                        var id;
+                        var group;
+                        while (1) {
+                            text = message.split(',', 2);
+                            id = text[0];
+                            group = text[1];
+                            if(!isNaN(id) && !isNaN(group)){
+                                break;
+                            }
+                        }
+                        sessionStorage.setItem("ID", id);
+                        sessionStorage.setItem("GROUP", group);
+                        window.location.replace("https://__________.com/session/"); // ***** Change this to your URL for the experimental session page
+                    },
+                    error: function() {
+                        alert("Please press the button again");
+                        text9.innerHTML = '';
+                        proceed2.style.display = "block";
+                    }
+                })
+            }
+            
+            function showPage3() {
+                inst0.style.display = "none";
+                inst3.style.display = "block";
+                inst3.style.left = (scWidth - inst3.clientWidth) / 2 + "px";
+                text10.innerHTML = "You chose not to participate in this HIT. You may close your web browser.";
+            }
+            
+            function showPage2() {
+                inst2.style.display = "block";
+                inst2.style.left = (scWidth - inst2.clientWidth) / 2 + "px";
+                text4.innerHTML = "After pressing the PROCEED button below, you will play a game to earn as many points as you can. A new page will appear and you will see a button.";
+                text5.innerHTML = "Pressing the button could sometimes increase or decrease your points. Points will be tracked by a bar on the screen.";
+                text6.innerHTML = "The game will take approximately 10 minutes to complete. If you complete the game, you will be paid for completing the HIT and every point earned will be worth US$0.00005.";
+                text7.innerHTML = "Failing to begin engaging with the game within 30 seconds after proceeding will terminate the opportunity to participate in this HIT and the opportunity for payment. Therefore, do not proceed unless you are ready to begin and complete the game.";
+                text8.innerHTML = "Press the PROCEED button when ready to continue and please begin the game as soon as the interface appears. ";
+            }
+            
+            function showPage1() {
+                cap.style.display = 'none';
+                inst1.style.display = "block";
+                inst1.style.left = (scWidth - inst1.clientWidth) / 2 + "px";
+                
+                text1.innerHTML = 'Hello and thank you for choosing this HIT!';
+                text3.innerHTML = 'IMPORTANT: Please read the following instructions before beginning! <br> \
+                <br> \
+                1. Payment for participating requires you stay on this tab of your web browser for the entire duration of the HIT. <br> \
+                <br> \
+                \xa0\xa0\xa0\xa0\xa0\xa0\xa0 Please close any other tabs that you have open that could distract you. <br> \
+                <br> \
+                \xa0\xa0\xa0\xa0\xa0\xa0\xa0 We use server-side coding so we will know if and how long you leave the HIT page.  <br> \
+                <br> \
+                \xa0\xa0\xa0\xa0\xa0\xa0\xa0 You WILL NOT BE PAID for participation if you violate this rule – no exceptions <br> \
+                <br> \
+                2. Do not press the “back page” button or "refresh" button at any time during the HIT. Doing so will end the HIT and your opportunity for payment. <br> \
+                <br> \
+                3. Only do this HIT on a laptop or desktop computer – do NOT USE a phone or tablet. <br> \
+                <br> \
+                4. Use one of the following web browsers: Google Chrome, Mozilla Firefox, or Microsoft Edge.<br> \
+                <br> \
+                5. When the HIT is over, the HIT code will be displayed onscreen for you to enter for payment. <br> \
+                <br> \
+                Press this button when ready to continue:<br> \
+                <br> \
+                ';
+            }
+            
+            function createCaptcha() {
+                document.getElementById('captcha').innerHTML = "";
+                
+                var charsArray = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@!#$%^&*";
+                var lengthOtp = 6;
+                var captcha = [];
+                
+                for (var i = 0; i < lengthOtp; i++) {
+                    // Disallow Repetition of Characters
+                    var index = Math.floor(Math.random() * charsArray.length + 1);
+                    if (captcha.indexOf(charsArray[index]) == -1)
+                        captcha.push(charsArray[index]);
+                    else i--;
+                }
+                
+                var canv = document.createElement("canvas");
+                canv.id = "captcha";
+                canv.width = 300;
+                canv.height = 50;
+                
+                var ctx = canv.getContext("2d");
+                ctx.font = "40px Georgia";
+                ctx.strokeText(captcha.join(""), 0, 30);
+                
+                // Store Captcha
+                code = captcha.join("");
+                document.getElementById("captcha").appendChild(canv);
+            }
+            
+            function validateCaptcha() {
+                event.preventDefault();
+                if (document.getElementById("cpatchaTextBox").value == code) {
+                    showPage1();
+                } else {
+                    alert("Try Again");
+                    document.getElementById("cpatchaTextBox").value = "";
+                    createCaptcha();
+                }
+            }
+            
+            function showCaptcha() {
+                inst0.style.display = "none";
+                cap.style.display = 'block';
+                createCaptcha();
+            }
+
+            function showPage0() {
+                cap.style.display = 'none';
+                inst1.style.display = "none";
+                inst2.style.display = "none";
+                inst3.style.display = "none";
+                inst0.style.left = (scWidth - inst0.clientWidth) / 2 + "px";
+                cap.style.left = (scWidth - 450) / 2 + "px";
+                cap.style.top = (scHeight - 150) / 2 + "px";
+            }
+            showPage0();
+        
+        </script>
+    </body>
+</html>

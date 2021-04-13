@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <meta charset="utf-8">
+        <style>
+        
+        .slideContainer {
+            width: 60%;
+            position: relative;
+            left: 200px;
+        }
+        
+        .slider {
+            -webkit-appearance: none;
+            width: 400px;
+            height: 15px;
+            border-radius: 5px;
+            background: #d3d3d3;
+            outline: none;
+            opacity: 0.7;
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+        }
+        
+        .slider:hover {
+            opacity: 1;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #4CAF50;
+            cursor: pointer;
+        }
+        
+        .slider::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #4CAF50;
+            cursor: pointer;
+        }
+
+        .textareaContainer {
+            width: 60%;
+            position: relative;
+            left: 200px;
+        }
+        
+        .radioContainer {
+            width: 60%;
+            position: relative;
+            left: 200px;
+        }
+        
+        .mixedContainer {
+            width: 60%;
+            position: relative;
+            left: 200px;
+        }
+        
+        .textboxContainer {
+            width: 60%;
+            position: relative;
+            left: 200px;
+        }
+        
+        </style>
+    </head>
+    <body>
+        
+        <div class="emptySpace">
+            <p><br></p>
+            <p><br></p>
+        </div>
+        
+        <div class="slideContainer">
+            <p><span id="t1"></span></p> <p><span id="rq1"></span></p>
+            <input id="Q1" type="range" min="1" max="100" value="50" class="slider"> 
+            <p>Value: <span id="v1"></span></p>
+            <p><br></p>
+        </div>
+        
+        <div class="slideContainer">
+            <p><span id="t2"></span></p> <p><span id="rq2"></span></p>
+            <input id="Q2" type="range" min="1" max="100" value="50" class="slider"> 
+            <p>Value: <span id="v2"></span></p>
+            <p><br></p>
+        </div>
+        
+        <div class="slideContainer">
+            <p><span id="t3"></span></p> <p><span id="rq3"></span></p>
+            <input id="Q3" type="range" min="1" max="100" value="50" class="slider"> 
+            <p>Value: <span id="v3"></span></p>
+            <p><br></p>
+        </div>
+        
+        <div class="slideContainer">
+            <p><span id="t4"></span></p> <p><span id="rq4"></span></p>
+            <input id="Q4" type="range" min="1" max="100" value="50" class="slider"> 
+            <p>Value: <span id="v4"></span></p>
+            <p><br></p>
+        </div>
+        
+        <div class="slideContainer">
+            <p><span id="t5"></span></p> <p><span id="rq5"></span></p>
+            <input id="Q5" type="range" min="1" max="100" value="50" class="slider"> 
+            <p>Value: <span id="v5"></span></p>
+            <p><br></p>
+        </div>
+        
+        <div class="slideContainer">
+            <p><span id="t6"></span></p> <p><span id="rq6"></span></p>
+            <input id="Q6" type="range" min="1" max="100" value="50" class="slider"> 
+            <p>Value: <span id="v6"></span></p>
+            <p><br></p>
+        </div>
+        
+        <div class="slideContainer">
+            <p><span id="t7"></span></p> <p><span id="rq7"></span></p>
+            <input id="Q7" type="range" min="1" max="100" value="50" class="slider"> 
+            <p>Value: <span id="v7"></span></p>
+            <p><br></p>
+        </div>
+        
+        <div class="slideContainer">
+            <p><span id="t8"></span></p> <p><span id="rq8"></span></p>
+            <input id="Q8" type="range" min="1" max="100" value="50" class="slider"> 
+            <p>Value: <span id="v8"></span></p>
+            <p><br></p>
+        </div>
+        
+        <div class="textareaContainer">
+            <p><span id="t9"></span></p>
+        	<textarea id="v9" name="v9" rows="5" cols="50"></textarea>
+        	<p><br></p>
+        </div>
+        
+        <div class="radioContainer">
+            <p><span id="t10"></span></p> <p><span id="rq10"></span></p>
+        	<input type="radio" name="strategy" value="yes"> Yes <br>
+        	<input type="radio" name="strategy" value="no" > No <br>
+        	<input type="radio" name="strategy" value="I prefer not to answer." > I prefer not to answer.  <br>
+        	<p><br></p>
+        </div>
+        
+        <div class="mixedContainer">
+            <p><span id="t11"></span></p>
+        	<textarea id="v11" name="v11" rows="5" cols="50"></textarea>
+        	<p><br></p>
+        </div>
+        
+        <div class="radioContainer">
+            <p><span id="t12"></span></p> <p><span id="rq12"></span></p>
+        	<input type="radio" id="changeStrategy" name="changeStrategy" value="I did not have a strategy"> I did not have a strategy <br>
+        	<input type="radio" id="changeStrategy" name="changeStrategy" value="I prefer not to answer"> I prefer not to answer <br>
+        	<input type="radio" id="changeStrategy" name="changeStrategy" value="My strategy did not change"> My strategy did not change <br>
+        	<input type="radio" id="changeStrategy" name="changeStrategy" value="My strategy did change"> My strategy did change (If so, please describe below how your strategy changed) <br>
+        	<textarea id="v12" name="v12" rows="5" cols="50"></textarea>
+        	<p><span id="rq12extra"></span></p>
+        	<p><br></p>
+        </div>
+        
+        <div class="textareaContainer">
+            <p><span id="t13"></span></p>
+        	<textarea id="v13" name="v13" rows="5" cols="50"></textarea>
+        	<p><br></p>
+        </div>
+        
+        <div class="slideContainer">
+            <p><span id="t14"></span></p> <p><span id="rq14"></span></p>
+            <input id="Q14" type="range" min="17" max="99" value="25" class="slider">
+            <p>Age: <span id="v14"></span></p>
+            <p><br></p>
+        </div>
+        
+        <div class="radioContainer">
+            <p><span id="t15"></span></p> <p><span id="rq15"></span></p>
+        	<input type="radio" name="sex" value="Male"> Male <br>
+        	<input type="radio" name="sex" value="Female" > Female <br>
+        	<input type="radio" name="sex" value="Other" > Other <br>
+        	<p><br></p>
+        </div>
+        
+        <div class="textboxContainer">
+            <p><span id="t16"></span></p> <p><span id="rq16"></span></p>
+        	<input type="text" id="nationality" name="nationality" value="" maxlength="25">
+        	<p><br></p>
+        </div>
+        
+        <div class="textboxContainer">
+            <p><span id="t17"></span></p> <p><span id="rq17"></span></p>
+        	<input type="text" id="country" name="country" value="" maxlength="25">
+        	<p><br></p>
+        </div>
+        
+        <div class="slideContainer">
+            <p><span id="t18"></span></p> <p><span id="rq18"></span></p>
+            <input id="Q18" type="range" min="1" max="100" value="50" class="slider">
+            <p>Value: <span id="v18"></span></p>
+            <p><br></p>
+        </div>
+        
+        <div class="radioContainer">
+            <p><span id="t19"></span></p> <p><span id="rq19"></span></p>
+        	<input type="radio" name="vision" value="No"> No <br>
+        	<input type="radio" name="vision" value="Yes, red-green color blindness" > Yes, red-green color blindness <br>
+        	<input type="radio" name="vision" value="Yes, blue-yellow color blindness" > Yes, blue-yellow color blindness <br>
+        	<input type="radio" name="vision" value="Yes, total color blindness"> Yes, total color blindness <br>
+        	<input type="radio" name="vision" value="Yes, other"> Yes, other <br>
+        	<p><br></p>
+        </div>
+        
+        <div class="buttonContainer">
+            <input type="button" id="proceed" style="width:180px;background-color:yellow;padding:10px;font-size:24px;margin-left:40%;margin-right:10%;" value="Proceed"> <br>
+            <p><span id="t20" style="margin-left:40%;margin-right:10%;"></span></p>
+        </div>
+        
+        <div class="emptySpace">
+            <p><br></p>
+            <p><br></p>
+        </div>
+        
+        <script>
+            "use strict";
+            
+            // Screen size
+            const scWidth = window.parent.screen.width;
+            const scHeight = window.parent.screen.height - 200;
+            
+            var filecount = 0;
+            var ID = 0;
+            var GROUP = 0;
+            var dollar = 0;
+            var code = 0;
+            
+            var flagSaveButtonClick = 0;
+            var flagDuringSave = 0;
+
+            var text1 = document.getElementById("t1");
+            var text2 = document.getElementById("t2");
+            var text3 = document.getElementById("t3");
+            var text4 = document.getElementById("t4");
+            var text5 = document.getElementById("t5");
+            var text6 = document.getElementById("t6");
+            var text7 = document.getElementById("t7");
+            var text8 = document.getElementById("t8");
+            var text9 = document.getElementById("t9");
+            var text10 = document.getElementById("t10");
+            var text11 = document.getElementById("t11");
+            var text12 = document.getElementById("t12");
+            var text13 = document.getElementById("t13");
+            var text14 = document.getElementById("t14");
+            var text15 = document.getElementById("t15");
+            var text16 = document.getElementById("t16");
+            var text17 = document.getElementById("t17");
+            var text18 = document.getElementById("t18");
+            var text19 = document.getElementById("t19");
+            var text20 = document.getElementById("t20");
+            
+            var output1 = document.getElementById("v1");
+            var output2 = document.getElementById("v2");
+            var output3 = document.getElementById("v3");
+            var output4 = document.getElementById("v4");
+            var output5 = document.getElementById("v5");
+            var output6 = document.getElementById("v6");
+            var output7 = document.getElementById("v7");
+            var output8 = document.getElementById("v8");
+            var output14 = document.getElementById("v14");
+            var output18 = document.getElementById("v18");
+
+            var slider1 = document.getElementById("Q1");
+            var slider2 = document.getElementById("Q2");
+            var slider3 = document.getElementById("Q3");
+            var slider4 = document.getElementById("Q4");
+            var slider5 = document.getElementById("Q5");
+            var slider6 = document.getElementById("Q6");
+            var slider7 = document.getElementById("Q7");
+            var slider8 = document.getElementById("Q8");
+            var slider14 = document.getElementById("Q14");
+            var slider18 = document.getElementById("Q18");
+            
+            var rq1 = document.getElementById("rq1");
+            var rq2 = document.getElementById("rq2");
+            var rq3 = document.getElementById("rq3");
+            var rq4 = document.getElementById("rq4");
+            var rq5 = document.getElementById("rq5");
+            var rq6 = document.getElementById("rq6");
+            var rq7 = document.getElementById("rq7");
+            var rq8 = document.getElementById("rq8");
+            var rq10 = document.getElementById("rq10");
+            var rq12 = document.getElementById("rq12");
+            var rq12extra = document.getElementById("rq12extra");
+            var rq14 = document.getElementById("rq14");
+            var rq15 = document.getElementById("rq15");
+            var rq16 = document.getElementById("rq16");
+            var rq17 = document.getElementById("rq17");
+            var rq18 = document.getElementById("rq18");
+            var rq19 = document.getElementById("rq19");
+            
+            var flag1 = 0;
+            var flag2 = 0;
+            var flag3 = 0;
+            var flag4 = 0;
+            var flag5 = 0;
+            var flag6 = 0;
+            var flag7 = 0;
+            var flag8 = 0;
+            var flag10 = 0;
+            var flag12 = 0;
+            var flag12extra = 0;
+            var flag14 = 0;
+            var flag15 = 0;
+            var flag16 = 0;
+            var flag17 = 0;
+            var flag18 = 0;
+            var flag19 = 0;
+            
+            var a1 = 0;
+            var a2 = 0;
+            var a3 = 0;
+            var a4 = 0;
+            var a5 = 0;
+            var a6 = 0;
+            var a7 = 0;
+            var a8 = 0;
+            var a9 = 0;
+            var a10 = 0;
+            var a11 = 0;
+            var a12 = 0;
+            var a12extra = 0;
+            var a13 = 0;
+            var a14 = 0;
+            var a15 = 0;
+            var a16 = 0;
+            var a17 = 0;
+            var a18 = 0;
+            var a19 = 0;
+            
+            var proceed = document.getElementById("proceed");
+            
+            function timer() {
+                setTimeout(timer, 10);
+                
+                if (flagSaveButtonClick) {
+                    if (!flagDuringSave) {
+                        text20.innerHTML = "Please click the button again";
+                        proceed.style.display = "block";
+                        flagSaveButtonClick = 0;
+                    }
+                }
+            }
+            
+            (function() {
+                slider1.oninput = function() {
+                    output1.innerHTML = this.value;
+                    slider1.style.backgroundColor = '#d3d3d3';
+                    flag1 = 1;
+                };
+                slider2.oninput = function() {
+                    output2.innerHTML = this.value;
+                    slider2.style.backgroundColor = '#d3d3d3';
+                    flag2 = 1;
+                };
+                slider3.oninput = function() {
+                    output3.innerHTML = this.value;
+                    slider3.style.backgroundColor = '#d3d3d3';
+                    flag3 = 1;
+                };
+                slider4.oninput = function() {
+                    output4.innerHTML = this.value;
+                    slider4.style.backgroundColor = '#d3d3d3';
+                    flag4 = 1;
+                };
+                slider5.oninput = function() {
+                    output5.innerHTML = this.value;
+                    slider5.style.backgroundColor = '#d3d3d3';
+                    flag5 = 1;
+                };
+                slider6.oninput = function() {
+                    output6.innerHTML = this.value;
+                    slider6.style.backgroundColor = '#d3d3d3';
+                    flag6 = 1;
+                };
+                slider7.oninput = function() {
+                    output7.innerHTML = this.value;
+                    slider7.style.backgroundColor = '#d3d3d3';
+                    flag7 = 1;
+                };
+                slider8.oninput = function() {
+                    output8.innerHTML = this.value;
+                    slider8.style.backgroundColor = '#d3d3d3';
+                    flag8 = 1;
+                };
+                slider14.oninput = function() {
+                    output14.innerHTML = this.value;
+                    slider14.style.backgroundColor = '#d3d3d3';
+                    flag14 = 1;
+                };
+                slider18.oninput = function() {
+                    output18.innerHTML = this.value;
+                    slider18.style.backgroundColor = '#d3d3d3';
+                    flag18 = 1;
+                };
+
+                // 'mouseup' instead of 'mousedown' for preventing multiple accesses to the PHP program. 
+                proceed.addEventListener('mouseup',function() {
+                    
+                    // Radio button
+                    if (document.querySelector('input[name = "strategy"]:checked') != null) {
+                        flag10 = 1;
+                    }
+                    
+                    if (document.querySelector('input[name = "changeStrategy"]:checked') != null) {
+                        flag12 = 1;
+                        if (document.querySelector('input[name = "changeStrategy"]:checked').value == "My strategy did change") {
+                            if (document.getElementById("v12").value != '') {
+                                flag12extra = 1;
+                            } else {
+                                flag12extra = 0;
+                            }
+                        } else {
+                            flag12extra = 1;
+                        }
+                    } else {
+                        flag12extra = 1;
+                    }
+                    if (document.querySelector('input[name = "sex"]:checked') != null) {
+                        flag15 = 1;
+                    }
+                    if (document.querySelector('input[name = "vision"]:checked') != null) {
+                        flag19 = 1;
+                    }
+                    
+
+                    // Text box
+                    if (document.getElementById("nationality").value != '') {
+                        flag16 = 1;
+                    }
+                    if(document.getElementById("country").value != '') {
+                        flag17 = 1;
+                    }
+                    
+                    if (!flag1 || !flag2 || !flag3 || !flag4 || !flag5 || !flag6 || !flag7 || !flag8 || !flag10 || !flag12 || !flag12extra || !flag14 || !flag15 || !flag16 || !flag17 || !flag18 || !flag19) {
+                        alert("There are some required questions you have not yet answered. Please check those questions.");
+                        
+                        // Sliding scales
+                        if (!flag1) {slider1.style.backgroundColor = '#ff0000'; rq1.style.display = "block"; } else rq1.style.display = "none"; 
+                        if (!flag2) {slider2.style.backgroundColor = '#ff0000'; rq2.style.display = "block"; } else rq2.style.display = "none"; 
+                        if (!flag3) {slider3.style.backgroundColor = '#ff0000'; rq3.style.display = "block"; } else rq3.style.display = "none"; 
+                        if (!flag4) {slider4.style.backgroundColor = '#ff0000'; rq4.style.display = "block"; } else rq4.style.display = "none"; 
+                        if (!flag5) {slider5.style.backgroundColor = '#ff0000'; rq5.style.display = "block"; } else rq5.style.display = "none"; 
+                        if (!flag6) {slider6.style.backgroundColor = '#ff0000'; rq6.style.display = "block"; } else rq6.style.display = "none"; 
+                        if (!flag7) {slider7.style.backgroundColor = '#ff0000'; rq7.style.display = "block"; } else rq7.style.display = "none"; 
+                        if (!flag8) {slider8.style.backgroundColor = '#ff0000'; rq8.style.display = "block"; } else rq8.style.display = "none"; 
+                        if (!flag14) {slider14.style.backgroundColor = '#ff0000'; rq14.style.display = "block"; } else rq14.style.display = "none"; 
+                        if (!flag18) {slider18.style.backgroundColor = '#ff0000'; rq18.style.display = "block"; } else rq18.style.display = "none"; 
+                        
+                        // Radio buttons
+                        if (!flag10) {rq10.style.display = "block"; } else rq10.style.display = "none"; 
+                        if (!flag12) {rq12.style.display = "block"; } else rq12.style.display = "none"; 
+                        if (!flag12extra) {rq12extra.style.display = "block"; } else rq12extra.style.display = "none"; 
+                        if (!flag15) {rq15.style.display = "block"; } else rq15.style.display = "none"; 
+                        if (!flag19) {rq19.style.display = "block"; } else rq19.style.display = "none"; 
+                        
+                        // Text box
+                        if (!flag16) {rq16.style.display = "block"; } else rq16.style.display = "none"; 
+                        if (!flag17) {rq17.style.display = "block"; } else rq17.style.display = "none"; 
+                    } else {
+                        a1 = slider1.value;
+                        a2 = slider2.value;
+                        a3 = slider3.value;
+                        a4 = slider4.value;
+                        a5 = slider5.value;
+                        a6 = slider6.value;
+                        a7 = slider7.value;
+                        a8 = slider8.value;
+                        a9 = document.getElementById("v9").value;
+                        a10 = document.querySelector('input[name = "strategy"]:checked').value;
+                        a11 = document.getElementById("v11").value;
+                        a12 = document.querySelector('input[name = "changeStrategy"]:checked').value;
+                        a12extra = document.getElementById("v12").value;
+                        a13 = document.getElementById("v13").value;
+                        a14 = slider14.value;
+                        a15 = document.querySelector('input[name = "sex"]:checked').value;
+                        a16 = document.getElementById("nationality").value;
+                        a17 = document.getElementById("country").value;
+                        a18 = slider18.value;
+                        a19 = document.querySelector('input[name = "vision"]:checked').value;
+                        
+                        text20.innerHTML = "Please wait...";
+                        proceed.style.display = "none";
+                        timer();
+                        flagDuringSave = 1;
+                        flagSaveButtonClick = 1;
+                        
+                        // Call a PHP function
+                        $.ajax({
+                            type: "POST",
+                            url: "/wp-content/themes/luxech/SaveSurveyData.php", // ***** This URL assumes that you uploaded "SaveSurveyData.php" under the directory for the Luxech theme)
+                            data: {
+                                "filecount": filecount,
+                                "ID": ID,
+                                "GROUP": GROUP,
+                                "dollar": dollar,
+                                "code": code,
+                                "a1": a1,
+                                "a2": a2,
+                                "a3": a3,
+                                "a4": a4,
+                                "a5": a5,
+                                "a6": a6,
+                                "a7": a7,
+                                "a8": a8,
+                                "a9": a9,
+                                "a10": a10,
+                                "a11": a11,
+                                "a12": a12,
+                                "a12extra": a12extra,
+                                "a13": a13,
+                                "a14": a14,
+                                "a15": a15,
+                                "a16": a16,
+                                "a17": a17,
+                                "a18": a18,
+                                "a19": a19
+                            },
+                            success: function(data) {
+                                sessionStorage.setItem("dollar", dollar); 
+                                sessionStorage.setItem("code", code);                       
+                                window.location.replace("https://___________.com/last/"); // ***** Change this to your URL for the last page
+                            },
+                            error: function(data) {
+                                flagDuringSave = 0;
+                            }
+                        })
+                    }
+                });
+            })();
+
+            function init() {
+                filecount = sessionStorage.getItem("filecount");
+                if (filecount == null) {
+                    filecount = "NoName";
+                }
+                
+                ID = sessionStorage.getItem("ID");
+                if (ID == null) {
+                    ID = -1;
+                }
+                
+                GROUP = sessionStorage.getItem("GROUP");
+                if (GROUP == null) {
+                    GROUP = -1;
+                }
+                
+                dollar = sessionStorage.getItem("dollar");
+                if (dollar == null) {
+                    dollar = 0;
+                }
+                
+                code = sessionStorage.getItem("code");
+                if (code == null) {
+                    code = 0;
+                }
+                
+                text1.innerHTML = "1)  On a scale of 1 (definitely no) to 100 (definitely yes), how sure are you there was a button with a RED HEART at some point during the HIT? ";
+                text2.innerHTML = "2)  On a scale of 1 (definitely no) to 100 (definitely yes), how sure are you there was a button with a BLACK SPADE at some point during the HIT? ";
+                text3.innerHTML = "3)  On a scale of 1 (definitely no) to 100 (definitely yes), how sure are you there was a button with a RED DIAMOND at some point during the HIT? ";
+                text4.innerHTML = "4)  On a scale of 1 (definitely no) to 100 (definitely yes), how sure are you there was a button with a BLACK CLUB at some point during the HIT? ";
+                text5.innerHTML = "5)  On a scale of 1 (not effective) to 100 (very effective), how sure are you the button with a RED HEART was effective for earning points at some point during the HIT? ";
+                text6.innerHTML = "6)  On a scale of 1 (not effective) to 100 (very effective), how sure are you the button with a BLACK SPADE was effective for earning points at some point during the HIT? ";
+                text7.innerHTML = "7)  On a scale of 1 (not effective) to 100 (very effective), how sure are you the button with a RED DIAMOND was effective for earning points at some point during the HIT? ";
+                text8.innerHTML = "8)  On a scale of 1 (not effective) to 100 (very effective), how sure are you the button with a BLACK CLUB was effective for earning points at some point during the HIT? ";
+                text9.innerHTML = "9)  What do you think was the overall purpose of the study you just completed? If you do not know, please feel free to respond, “I don’t know.” Leave the question blank if you prefer not to answer. ";
+                text10.innerHTML = "10)  Did you have an overall strategy that you used throughout the study? ";
+                text11.innerHTML = "11)  Please describe your overall strategy that you used throughout the study. If you did not have a strategy, please feel free to respond, “I did not have a strategy.” Leave the question blank if you prefer not to answer. ";
+                text12.innerHTML = "12)  Did your strategy change as you moved forward in the study? ";
+                text13.innerHTML = "13)  If there is any other information you wish to explain about your experience during the study, please describe here:";
+                text14.innerHTML = "14) What is your age?"; 
+                text15.innerHTML = "15) What gender/sex do you identify with?";
+                text16.innerHTML = "16) What is your nationality?";
+                text17.innerHTML = "17) In what country do you live?";
+                text18.innerHTML = "18) How much distress did you feel resulting from this task from 1 (no stress) to 100 (very stressful)? ";
+                text19.innerHTML = "19) Do you have any problems with color vision?";
+
+                text20.style.color = "#ff0000";
+
+                output1.innerHTML = slider1.value;
+                output2.innerHTML = slider2.value;
+                output3.innerHTML = slider3.value;
+                output4.innerHTML = slider4.value;
+                output5.innerHTML = slider5.value;
+                output6.innerHTML = slider6.value;
+                output7.innerHTML = slider7.value;
+                output8.innerHTML = slider8.value;
+                output14.innerHTML = slider14.value;
+                output18.innerHTML = slider18.value;
+                
+                rq1.innerHTML = "Required field";
+                rq2.innerHTML = "Required field";
+                rq3.innerHTML = "Required field";
+                rq4.innerHTML = "Required field";
+                rq5.innerHTML = "Required field";
+                rq6.innerHTML = "Required field";
+                rq7.innerHTML = "Required field";
+                rq8.innerHTML = "Required field";
+                rq10.innerHTML = "Required field";
+                rq12.innerHTML = "Required field";
+                rq12extra.innerHTML = "Required field";
+                rq14.innerHTML = "Required field";
+                rq15.innerHTML = "Required field";
+                rq16.innerHTML = "Required field";
+                rq17.innerHTML = "Required field";
+                rq18.innerHTML = "Required field";
+                rq19.innerHTML = "Required field";
+                
+                rq1.style.color = "#ff0000";
+                rq2.style.color = "#ff0000";
+                rq3.style.color = "#ff0000";
+                rq4.style.color = "#ff0000";
+                rq5.style.color = "#ff0000";
+                rq6.style.color = "#ff0000";
+                rq7.style.color = "#ff0000";
+                rq8.style.color = "#ff0000";
+                rq10.style.color = "#ff0000";
+                rq12.style.color = "#ff0000";
+                rq12extra.style.color = "#ff0000";
+                rq14.style.color = "#ff0000";
+                rq15.style.color = "#ff0000";
+                rq16.style.color = "#ff0000";
+                rq17.style.color = "#ff0000";
+                rq18.style.color = "#ff0000";
+                rq19.style.color = "#ff0000";
+                
+                rq1.style.display = "none";
+                rq2.style.display = "none";
+                rq3.style.display = "none";
+                rq4.style.display = "none";
+                rq5.style.display = "none";
+                rq6.style.display = "none";
+                rq7.style.display = "none";
+                rq8.style.display = "none";
+                rq10.style.display = "none";
+                rq12.style.display = "none";
+                rq12extra.style.display = "none";
+                rq14.style.display = "none";
+                rq15.style.display = "none";
+                rq16.style.display = "none";
+                rq17.style.display = "none";
+                rq18.style.display = "none";
+                rq19.style.display = "none";
+                
+                proceed.innerHTML = "Proceed";
+                
+            }
+            init();
+        
+        </script>
+    </body>
+</html>

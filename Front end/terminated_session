@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <style>
+        
+        .Container {
+            width: 50%;
+            position: absolute;
+        }
+        
+        </style>
+    </head>
+    <body>
+        
+        <div class="Container" id="inst">
+            <p><br></p>
+            <p><br></p>
+            <p><br></p>
+            <p><br></p>
+            <p><br></p>
+            <p><span id="t1"></span></p>
+            <p><br></p>
+            <p><br></p>
+        </div>
+        
+        <script>
+            "use strict";
+            
+            // Screen size
+            const scWidth = window.parent.screen.width;
+            const scHeight = window.parent.screen.height - 200;
+            
+            var inst = document.getElementById('inst');
+            var text1 = document.getElementById('t1');
+
+
+            function showPage() {
+
+                inst.style.display = "block";
+                inst.style.left = (scWidth - inst.clientWidth) / 2 + "px";
+                
+                text1.innerHTML = "As stated in the instructions, this HIT closed because you did not begin the game within 30 seconds of starting the game. You did not earn payment. You may close your web browser.";
+            }
+            showPage()
+        
+        </script>
+    </body>
+</html>

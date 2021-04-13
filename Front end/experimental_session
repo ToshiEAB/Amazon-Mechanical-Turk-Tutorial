@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <meta charset="utf-8">
+        <style>
+            html,body{
+                margin : 0px auto;
+                width: 100%;
+                height: 100%;
+            }
+        
+            .responsePanel {
+                margin : 0px auto;
+                position: absolute;
+            }
+            
+            .workplace {
+                margin : 0px auto;
+                width: 350px;
+                height: 350px;
+                border-radius: 5px;
+                border: solid 3px #800000;
+                background-color: #fea636;
+                opacity: 0.2;
+                position: absolute;
+                user-select: none; 
+                -ms-user-select: none;
+                -moz-user-select: none;
+                -webkit-user-select: none;
+            }
+            
+            .respButton {
+                margin : 0px auto;
+                width: 100px;
+                height: 100px;
+                padding: 3px;
+                border-radius: 5px;
+                border: solid 1px #000000;
+    	        text-align: center;
+                color: white;
+    	        font-weight: bold;
+                position: absolute;
+                user-select: none; 
+                -ms-user-select: none;
+                -moz-user-select: none;
+                -webkit-user-select: none;
+            }
+            
+            .respButton:hover {
+                opacity: 0.8;
+            }
+            
+            .scoreContainer {
+                position: absolute;
+            }
+            
+            #barPoint {
+                margin : 0px auto;
+                width: 50px;
+                border: solid 1px #000000;
+                position: absolute;
+                user-select: none; 
+                -ms-user-select: none;
+                -moz-user-select: none;
+                -webkit-user-select: none;
+            }
+            
+            #barPoint.normal {
+                background: #d3d3d3;
+            }
+            
+            #barPoint.flashRed {
+                background: #ff0000;
+            }
+            
+            #barPoint.flashGreen {
+                background: #00ff00;
+            }
+            
+            #lblBarPoint {
+                margin : 0px auto;
+                font-size: 12pt;
+                font-weight: bold;
+                width: 50px;
+                position: absolute;
+                user-select: none; 
+                -ms-user-select: none;
+                -moz-user-select: none;
+                -webkit-user-select: none;
+            }
+            
+            #lblDollar {
+                margin : 0px auto;
+                font-size: 12pt;
+                width: 200px;
+                position: absolute;
+                user-select: none; 
+                -ms-user-select: none;
+                -moz-user-select: none;
+                -webkit-user-select: none;
+            }
+            
+            #lblNetGain {
+                margin : 0px auto;
+                font-size: 14pt;
+                width: 50px;
+                text-align: center;
+                position: absolute;
+                user-select: none; 
+                -ms-user-select: none;
+                -moz-user-select: none;
+                -webkit-user-select: none;
+            }
+            
+            #imgBeach {
+                margin : 0px auto;
+                width: 100%;
+                height: 100%;
+                background: url(/wp-content/themes/luxech/images/beach.jpg); // ***** This assumes that you uploaded "beach.jpg" to the "images" directory under the directory for the Luxech theme
+                background-size: cover;
+                background-repeat: no-repeat;
+                display: none;
+            }
+            
+            #imgBeach.appear {
+                display: block;
+            }
+            
+            .Star {
+                margin : 0px auto;
+                font-size: 18pt;
+                width: 200px;
+                height: 200px;
+                position: absolute;
+                user-select: none; 
+                -ms-user-select: none;
+                -moz-user-select: none;
+                -webkit-user-select: none;
+            }
+            
+            .Gain {
+                margin : 0px auto;
+                font-size: 18pt;
+                width: 50px;
+                text-align: center;
+                position: absolute;
+                user-select: none; 
+                -ms-user-select: none;
+                -moz-user-select: none;
+                -webkit-user-select: none;
+            }
+            
+            .Loss {
+                margin : 0px auto;
+                font-size: 18pt;
+                width: 50px;
+                text-align: center;
+                position: absolute;
+                user-select: none; 
+                -ms-user-select: none;
+                -moz-user-select: none;
+                -webkit-user-select: none;
+            }
+            
+            .saveContainer {
+                margin : 0px auto;
+                width: 60%;
+                position: relative;
+                -ms-user-select: none;
+                -moz-user-select: none;
+                -webkit-user-select: none;
+            }
+
+        </style>
+    </head>
+    <body>
+        
+        <div class='responsePanel' id='leftPanel'>
+            <div class='workplace' id='leftWorkplace'></div>
+            <div class='respButton' id='btnLeft' onmousedown='return false'></div>
+            <p><br></p>
+        </div>
+        
+        <div class='responsePanel' id='rightPanel'>
+            <div class='workplace' id='rightWorkplace'></div>
+            <div class='respButton' id='btnRight' onmousedown='return false'></div>
+        </div>
+        
+        <div class='scoreContainer' id ='scoreBoard'>
+            <div class='normal' id='barPoint'></div>
+            <div id='lblBarPoint'></div>
+            <div id='lblDollar'></div>
+            <div id='lblNetGain'></div>
+        </div>
+        
+        <div id='imgBeach'></div>
+        <div class='Star' id='imgStarLeft'></div>
+        <div class='Star' id='imgStarRight'></div>
+        <div class='Gain' id='lblGainLeft'></div>
+        <div class='Gain' id='lblGainRight'></div>
+        <div class='Loss' id='lblLossLeft'></div>
+        <div class='Loss' id='lblLossRight'></div>
+        
+        <div class='saveContainer' id ='saveData'>
+            <p><br></p>
+            <p><br></p>
+            <p><br></p>
+            <p><span id='lblMessage' style='font-size:16px;margin-left:15%;margin-right:10%;'></span></p>
+            <div><input id='btnSaveData' type='button' style='width:180px;background-color:yellow;padding:10px;font-size:24px;margin-left:35%;margin-right:10%;' value='Proceed'></div>
+            <p><br></p>
+        </div>
+        
+        <script>
+             "use strict";
+            
+            // Objects
+            const leftPanel = document.getElementById('leftPanel');
+            const leftWorkplace = document.getElementById('leftWorkplace');
+            const btnLeft = document.getElementById('btnLeft');
+            const rightPanel = document.getElementById('rightPanel');
+            const rightWorkplace = document.getElementById('rightWorkplace');
+            const btnRight = document.getElementById('btnRight');
+            const scoreBoard = document.getElementById('scoreBoard');
+            const barPoint= document.getElementById('barPoint');
+            const lblBarPoint= document.getElementById('lblBarPoint');
+            const lblDollar= document.getElementById('lblDollar');
+            const lblNetGain= document.getElementById('lblNetGain');
+            const imgBeach = document.getElementById('imgBeach');
+            const imgStarLeft= document.getElementById('imgStarLeft');
+            const imgStarRight = document.getElementById('imgStarRight');
+            const lblGainLeft = document.getElementById('lblGainLeft'); 
+            const lblGainRight = document.getElementById('lblGainRight'); 
+            const lblLossLeft = document.getElementById('lblLossLeft');
+            const lblLossRight = document.getElementById('lblLossRight');
+            const saveData = document.getElementById('saveData');
+            const lblMessage = document.getElementById('lblMessage');
+            const btnSaveData = document.getElementById('btnSaveData');
+            
+            // Parameters
+            const basePay = 0.5; // Base payment
+            const VI_Target = 2; // VI value for target response
+            const VI_Alt = 2; // VI value for alternative response
+            const COR = 1; // Changeover ratio
+            const lossWeight = 1; // Response cost (points per response)
+            const noLossSign = 0; // Just for when lossWeight = 0
+            const gainWeight = 100; // Reinforcer points
+            const initPoint = 1000; // Initial points
+            const terminatePhase1 = 30000; // in ms
+            const dollarPerPoint = 0.00005; // $ per point
+            const intervalPeriodLength = 12000; // 12-s bins
+            const numIntervalsPhase1 = 5; // #bins in Phase 1
+            const numIntervalsPhase2 = 5; // #bins in Phase 2
+            var symbol = 0; // 0 = heart/club; 1 = club/heart (randomly assigned)
+            var targetSide = 0; // 0 = left, 1 = right (randomly assigned)
+            var reversal = 0; // 0 = no reversal; 1 = reversal
+            
+            // Dependent variables
+            var ID = 0;
+            var GROUP = 0;
+            var code = 0;
+            var dtStart = [];
+            var dtEnd = [];
+            var targetRespCount = 0;
+            var altRespCount = 0;
+            var totalGain = 0;
+            var totalLoss = 0;
+            var netGain = 0;
+            var totalSR = 0;
+            var srPhase1 = 0;
+            var srPhase2 = 0;
+            
+            // Array of responses per bin
+            var arrTargetRespCountPhase1 = [];
+            var arrTargetRespCountPhase2 = [];
+            var arrAltRespCountPhase1 = [];
+            var arrAltRespCountPhase2 = [];
+            
+            // For real-time data with event markers (01-99)
+            var numOfEvents = 0;
+            var arrEvents = [];
+            
+            // 01: Target response
+            // 02: Alternative response
+            // 03: Response on Left workplace
+            // 04: Response on Right workplace
+            // 05: Response on Point bar
+            // 06: Response on "POINTS" label
+            // 07: Response on $US
+            // 08: Response on net-gain points
+            // 09: Response on the background image
+            // 10: Response on Left Star
+            // 11: Response on Right Star
+            // 12: Response on point-gain label on Left Star
+            // 13: Response on point-gain label on Right Star
+            // 14: Response on point-loss label on Left Star
+            // 15: Response on point-loss label on Right Star
+            // 16: Reinforcement on the left side
+            // 17: Reinforcement on the right side
+            // 30: End of Phase 1
+            // 99: End of session
+
+            // Flags
+            var flagInitPhase1 = 1; 
+            var flagEndPhase1 = 0;
+            var flagInitSRPhase2 = 1;
+            var flagEndSession = 0;
+            var flagSaveButtonClick = 0;
+            var flagDuringSave = 0;
+            var flagTerminate = 0;
+            var flagCOR_Target = 0;
+            var flagCOR_Alt = 0;            
+            
+            // Session-related variables
+            var dtSt = 0;
+            var dtE = 0;
+            var startTime = 0;
+            var intervalOnsetMotion = 0;
+            var intervalOnsetPeriod = 0;
+            var onsetVI = 0;
+            var tmpTargetRespCount = 0;
+            var tmpAltRespCount = 0;
+            var tmpCOR_Target = 0;
+            var tmpCOR_Alt = 0;
+            var intervalCountPhase1 = 0;
+            var intervalCountPhase2 = 0;
+
+            // Screen size
+            const Width = window.parent.screen.width;
+            const Height = window.parent.screen.height - 200;
+            const offsetMidline = 300;
+
+            // Button-related variables
+            const buttonSize = btnLeft.clientWidth; 
+            const motionInterval = 200; // in ms
+            const motionRange = 1.2;
+            const buttonMotionStep = buttonSize / 5;
+            const adj = buttonSize * motionRange;
+            var btnLeftMinX = 0;
+            var btnLeftMaxX = 0;
+            var btnLeftMinY = 0;
+            var btnLeftMaxY = 0;
+            var btnRightMinX = 0;
+            var btnRightMaxX = 0;
+            var btnRightMinY = 0;
+            var btnRightMaxY = 0;
+            
+            // Other objects-related variables
+            const starOffsetX = -50;
+            const starOffsetY = 200;
+            const gainOffsetX = 15;
+            const gainOffsetY = 120;
+            const lossOffsetX = 25;
+            const lossOffsetY = 10;
+            const lblOffset = 30;
+            const pixelRatio = 50;
+            const lblBarPointOffset = 10;
+            var bottomPanel = 0;
+            
+            // Default seeds for xorshift random number generator (Marsaglia, 2003) -- Actually never used
+            var seed = [123456789, 362436069, 521288629, 88675123];
+            
+            // Variables for generating Fleshler & Hoffman (1962) distribution (see also Escobar & Pérez-Herrera, 2015)
+            var Value_Variable = 0;
+            var v = 0;
+            var n = 0;
+            var order = 0;
+            var Iteration_Variable = 0;
+            var Iterations = 10;
+            var rd = Array(Iterations + 1);
+            var vi= Array(Iterations + 1);
+            var Sumxser = 0;
+
+            // Call a PHP program
+            function SaveData() {
+                lblMessage.innerHTML = "Please wait...";
+                btnSaveData.style.display = "none";
+                flagDuringSave = 1;
+                flagSaveButtonClick = 1;
+                
+                $.ajax({
+                    type: "POST",
+                    url: "/wp-content/themes/luxech/SaveDataFile.php", // ***** This assumes that you uploaded "SaveDataFile.php" to under the directory for the Luxech theme
+                    data: {
+                        "ID": ID,
+                        "GROUP": GROUP,
+                        "code": code,
+                        "basePay": basePay,
+                        "dtStart": dtStart,
+                        "dtEnd": dtEnd,
+                        "targetRespCount": targetRespCount,
+                        "altRespCount": altRespCount,
+                        "totalGain": totalGain,
+                        "totalLoss": totalLoss,
+                        "netGain": netGain,
+                        "totalSR": totalSR,
+                        "srPhase1": srPhase1,
+                        "srPhase2": srPhase2,
+                        "arrTargetRespCountPhase1": arrTargetRespCountPhase1,
+                        "arrTargetRespCountPhase2": arrTargetRespCountPhase2,
+                        "arrAltRespCountPhase1": arrAltRespCountPhase1,
+                        "arrAltRespCountPhase2": arrAltRespCountPhase2,
+                        "arrEvents": arrEvents,
+     
+                        "VI_Target": VI_Target,
+                        "VI_Alt": VI_Alt,
+                        "COR": COR,
+                        "lossWeight": lossWeight,
+                        "noLossSign": noLossSign,
+                        "gainWeight": gainWeight,
+                        "initPoint": initPoint,
+                        "terminatePhase1": terminatePhase1,
+                        "dollarPerPoint": dollarPerPoint,
+                        "intervalPeriodLength": intervalPeriodLength,
+                        "numIntervalsPhase1": numIntervalsPhase1,
+                        "numIntervalsPhase2": numIntervalsPhase2,
+                        "symbol": symbol,
+                        "targetSide": targetSide,
+                        "reversal": reversal
+                    },
+                    success: function(filecount) {
+                        sessionStorage.setItem("filecount", filecount);
+                        sessionStorage.setItem("ID", ID);
+                        sessionStorage.setItem("GROUP", GROUP);
+                        sessionStorage.setItem("code", code); 
+                        sessionStorage.setItem("basePay", basePay);
+                        sessionStorage.setItem("netGain", netGain);
+                        sessionStorage.setItem("dollarPerPoint", dollarPerPoint);
+                        window.location.replace("https://_________.com/endofsession/"); // ***** Change this to your URL for an end-of-session page
+                    },
+                    error: function() {
+                        flagDuringSave = 0;
+                    }
+                })
+            }
+
+            // Record real time with event markers
+            function EventMarker(event) {
+                var str = event + ") " + Math.round(RealTime());
+                arrEvents.push(str);
+                numOfEvents++;
+            }
+            
+            // Calculate overall points
+            function calcPoint() {
+                totalLoss = (targetRespCount + altRespCount) * lossWeight;
+                netGain = totalGain - totalLoss;
+                
+                if (netGain >= 0) {
+                    barPoint.style.height = (netGain / pixelRatio) + "px";
+                    barPoint.style.top = bottomPanel - netGain / pixelRatio + "px";
+                    
+                    lblNetGain.style.top = bottomPanel - netGain / pixelRatio - lblOffset + "px";
+                    lblNetGain.innerHTML= netGain;
+                    
+                    lblBarPoint.style.top = bottomPanel + "px";
+                } else {
+                    barPoint.style.height = (-netGain / pixelRatio) + "px";
+                    barPoint.style.top = bottomPanel + "px";
+                    
+                    lblNetGain.style.top = bottomPanel - (netGain / pixelRatio) + "px";
+                    lblNetGain.innerHTML= netGain;
+                    
+                    lblBarPoint.style.top = bottomPanel - lblBarPointOffset * 2.5 + "px";
+                }
+                lblDollar.innerHTML = "US$ "+ (netGain * dollarPerPoint).toFixed(5);
+            }
+            
+            // Flash red on the point bar
+            function flashRed() {
+                barPoint.classList.add('flashRed');
+                setTimeout(function(){
+                  barPoint.classList.remove('flashRed');
+                }, 400)
+            }
+            
+            // Flash green on the point bar
+            function flashGreen() {
+                barPoint.classList.add('flashGreen');
+                setTimeout(function(){
+                  barPoint.classList.remove('flashGreen');
+                }, 400)
+            }
+            
+            // Reinforcement
+            function SR(side) {
+                totalSR++;
+                totalGain = totalGain + gainWeight;
+                
+                if (side == 0) { // 0 = Left, 1 = Right
+                    EventMarker("16");
+                    $('#lblGainLeft').show();
+                    lblGainLeft.innerHTML = "+" + gainWeight;
+                    $('#lblGainLeft').fadeOut(400);
+                    
+                    $('#imgStarLeft').show();
+                    imgStarLeft.innerHTML = '<img src ="/wp-content/themes/luxech/images/star_pt.png">'; // ***** This assumes that you uploaded "start_pt.png" to the "images" directory under the directory for the Luxech theme
+                    $('#imgStarLeft').fadeOut(400);
+                } else {
+                    EventMarker("17");
+                    $('#lblGainRight').show();
+                    lblGainRight.innerHTML = "+" + gainWeight;
+                    $('#lblGainRight').fadeOut(400);
+                    
+                    $('#imgStarRight').show();
+                    imgStarRight.innerHTML = '<img src ="/wp-content/themes/luxech/images/star_pt.png">'; // ***** This assumes that you uploaded "start_pt.png" to the "images" directory under the directory for the Luxech theme
+                    $('#imgStarRight').fadeOut(400);
+                }
+                flashGreen();
+            }
+            
+            // Response cost
+            function respCost(side) {
+                if (side == 0) { // 0 = Left, 1 = Right
+                    $('#lblLossLeft').show();
+                    if (lossWeight == 0) {
+                        if (noLossSign == 0) {
+                            lblLossLeft.innerHTML = lossWeight;
+                        } 
+                    } else {
+                        lblLossLeft.innerHTML = "-" + lossWeight;
+                    }
+                    $('#lblLossLeft').fadeOut(400);
+                } else {
+                    $('#lblLossRight').show();
+                    if (lossWeight == 0) {
+                        if (noLossSign == 0) {
+                            lblLossRight.innerHTML = lossWeight;
+                        } 
+                    } else {
+                        lblLossRight.innerHTML = "-" + lossWeight;
+                    }
+                    $('#lblLossRight').fadeOut(400);
+                }
+            }
+
+            // Events caused by target response
+            function TargetResp(side) {
+                targetRespCount++;
+                tmpTargetRespCount++;
+                EventMarker("01");
+                
+                tmpCOR_Target++;
+                flagCOR_Alt = 1;
+                tmpCOR_Alt = 0;
+                
+                respCost(side);
+
+                if (flagInitPhase1) {
+                    // Phase 1 does not start until the first SR, after meeting COR
+                    if (tmpCOR_Target > COR) {
+                        flagCOR_Target = 0;
+                    }
+                    if (flagCOR_Target == 1) {
+                        if (!noLossSign) {
+                            flashRed();
+                        }
+                        calcPoint();
+                        return;
+                    }
+                    
+                    SR(side);
+                    intervalOnsetPeriod = performance.now();
+                    
+                    onsetVI = performance.now();
+                    flagInitPhase1 = 0;
+                    
+                } else {
+                    if (!flagEndPhase1) {
+                        // Phase 1
+                        if (performance.now() - onsetVI >= rd[Value_Variable]) {
+                            
+                            // COR
+                            if (tmpCOR_Target > COR) {
+                                flagCOR_Target = 0;
+                            }
+                            if (flagCOR_Target == 1) {
+                                if (!noLossSign) {
+                                    flashRed();
+                                }
+                                calcPoint();
+                                return;
+                            }
+                            
+                            SR(side);
+                            srPhase1++;
+                            
+                            onsetVI = performance.now(); 
+                            Value_Variable++;
+                            FleshlerHoffman(VI_Target);
+                        } else {
+                            if (!noLossSign) {
+                                flashRed();
+                            }
+                        }
+                    } else {
+                        // Phases 2
+                        if (reversal) { // 0 = no reversal; 1 = reversal
+                            if (!noLossSign) {
+                                flashRed();
+                            }
+                        } else {
+                            if (performance.now() - onsetVI >= rd[Value_Variable]) {
+                            
+                                // COR
+                                if (tmpCOR_Target > COR) {
+                                    flagCOR_Target = 0;
+                                }
+                                if (flagCOR_Target == 1) {
+                                    if (!noLossSign) {
+                                        flashRed();
+                                    }
+                                    calcPoint();
+                                    return;
+                                }
+                                
+                                SR(side);
+                                srPhase2++;
+                                
+                                onsetVI = performance.now(); 
+                                Value_Variable++;
+                                FleshlerHoffman(VI_Target);
+                            } else {
+                                if (!noLossSign) {
+                                    flashRed();
+                                }
+                            }
+                        }
+                    }
+                }
+                calcPoint();
+            }
+            
+            // Events caused by alternative response
+            function AltResp(side) {
+                altRespCount++;
+                tmpAltRespCount++;
+                EventMarker("02");
+
+                tmpCOR_Alt++;
+                flagCOR_Target = 1;
+                tmpCOR_Target = 0;
+
+                respCost(side);
+                
+                if (!flagEndPhase1) {
+                    // Phase 1
+                    if (!noLossSign) {
+                        flashRed();
+                    }
+                } else {
+                    // Phase 2
+                    if (reversal) { // 0 = no reversal; 1 = reversal
+                        if (flagInitSRPhase2) {
+                            // Note Phase 2 automatically starts but VI schedule starts only after the first SR upon a single response, after meeting COR 
+                            // COR
+                            if (tmpCOR_Alt > COR) {
+                                flagCOR_Alt = 0;
+                            }
+                            if (flagCOR_Alt == 1) {
+                                if (!noLossSign) {
+                                    flashRed();
+                                }
+                                calcPoint();
+                                return;
+                            }
+                            
+                            SR(side);
+                            srPhase2++;
+                            
+                            onsetVI = performance.now();
+                            flagInitSRPhase2 = 0;
+                        } else {
+                            if (performance.now() - onsetVI >= rd[Value_Variable]) {
+                    
+                                // COR
+                                if (tmpCOR_Alt > COR) {
+                                    flagCOR_Alt = 0;
+                                }
+                                if (flagCOR_Alt == 1) {
+                                    if (!noLossSign) {
+                                        flashRed();
+                                    }
+                                    calcPoint();
+                                    return;
+                                }
+                                
+                                SR(side);
+                                srPhase2++;
+                                
+                                onsetVI = performance.now(); 
+                                Value_Variable++;
+                                FleshlerHoffman(VI_Alt);
+                            } else {
+                                if (!noLossSign) {
+                                    flashRed();
+                                }
+                            }
+                        }
+                    } else {
+                        if (!noLossSign) {
+                            flashRed();
+                        }
+                    }
+                }
+                calcPoint();
+            }
+
+            // A variety of responses
+            (function() {
+                btnLeft.addEventListener('mousedown',function() {
+                    btnLeft.style.opacity = 1.0;
+                    btnRight.style.opacity = 0.5;
+                    if (targetSide == 0) { // 0 = Left, 1 = Right
+                        TargetResp(0); 
+                    } else {
+                        AltResp(0);    
+                    }
+                });
+                
+                btnRight.addEventListener('mousedown',function() {
+                    btnRight.style.opacity = 1.0;
+                    btnLeft.style.opacity = 0.5;
+                    if (targetSide == 0) {
+                        AltResp(1);
+                    } else {
+                        TargetResp(1); 
+                    }
+                });
+                
+                leftWorkplace.addEventListener('mousedown',function() {
+                    EventMarker("03");
+                });
+                
+                rightWorkplace.addEventListener('mousedown',function() {
+                    EventMarker("04");
+                });
+                
+                barPoint.addEventListener('mousedown',function() {
+                    EventMarker("05");
+                });
+                
+                lblBarPoint.addEventListener('mousedown',function() {
+                    EventMarker("06");
+                });
+                
+                lblDollar.addEventListener('mousedown',function() {
+                    EventMarker("07");
+                });
+                
+                lblNetGain.addEventListener('mousedown',function() {
+                    EventMarker("08");
+                });
+                
+                $('html').click(function(e) {
+                    if(e.target.tagName == 'HTML') {
+                        EventMarker("09");
+                    }
+                });
+                
+                imgBeach.addEventListener('mousedown',function() {
+                    EventMarker("09");
+                });
+                
+                imgStarLeft.addEventListener('mousedown',function() {
+                    EventMarker("10");
+                });
+                
+                imgStarRight.addEventListener('mousedown',function() {
+                    EventMarker("11");
+                });
+                
+                lblGainLeft.addEventListener('mousedown',function() {
+                    EventMarker("12");
+                });
+                
+                lblGainRight.addEventListener('mousedown',function() {
+                    EventMarker("13");
+                });
+                
+                lblLossLeft.addEventListener('mousedown',function() {
+                    EventMarker("14");
+                });
+                
+                lblLossRight.addEventListener('mousedown',function() {
+                    EventMarker("15");
+                });
+                
+                btnSaveData.addEventListener('mousedown',function() {
+                    SaveData();
+                });
+            })();
+
+            // Move a button to the left
+            function MoveLeft(btn) {
+                 btn.style.left = (parseInt(btn.style.left, 10) - buttonMotionStep) + "px";
+            }
+            
+            // Move a button to the right
+            function MoveRight(btn) {
+                btn.style.left = (parseInt(btn.style.left, 10) + buttonMotionStep) + "px";
+            }
+
+            // Move a button to the upward
+            function MoveUp(btn) {
+                btn.style.top = (parseInt(btn.style.top, 10) - buttonMotionStep) + "px";
+            }
+            
+            // Move a button to the downward
+            function MoveDown(btn) {
+                btn.style.top = (parseInt(btn.style.top, 10) + buttonMotionStep) + "px";
+            }
+
+            // Determine the next button location
+            function btnmov(btn, minX, maxX, minY, maxY) {
+                var newLoc_X = new Array(2);
+                var newLoc_Y = new Array(2);
+                
+                var blnTop = Boolean(true);
+                var blnBottom = Boolean(true);
+                var blnLeft = Boolean(true);
+                var blnRight = Boolean(true);
+                
+                newLoc_X[0] = parseInt(btn.style.left, 10) - buttonMotionStep;
+                newLoc_X[1] = parseInt(btn.style.left, 10) + buttonMotionStep;
+                newLoc_Y[0] = parseInt(btn.style.top, 10) - buttonMotionStep;
+                newLoc_Y[1] = parseInt(btn.style.top, 10) + buttonMotionStep;
+
+                if (newLoc_X[0] < minX) blnLeft = false;
+                if (newLoc_X[1] > maxX) blnRight = false;
+                if (newLoc_Y[0] < minY) blnTop = false;
+                if (newLoc_Y[1] > maxY) blnBottom = false;
+
+                var dirs = Number(blnLeft) + Number(blnRight) + Number(blnTop) + Number(blnBottom);
+                var rn = 0;
+                
+                // 2 possible directions
+                if (dirs == 2) {
+                    rn = (Math.abs(xorshift()) % 2);
+                    if (blnLeft) {
+                        if (rn == 0) {
+                            MoveLeft(btn);
+                            return;
+                        } else {
+                            if (blnRight) {
+                                MoveRight(btn);
+                                return;
+                            }
+                            if (blnTop) {
+                                MoveUp(btn);
+                                return;
+                            }
+                            if (blnBottom) {
+                                MoveDown(btn);
+                                return;
+                            }
+                        }
+                    }
+                    
+                    if (blnRight) {
+                        if (rn == 0) {
+                            MoveRight(btn);
+                            return;
+                        } else {
+                            if (blnTop) {
+                                MoveUp(btn);
+                                return;
+                            }
+                            if (blnBottom) {
+                                MoveDown(btn);
+                                return;
+                            }
+                        }
+                    }
+                    
+                    if (blnTop) {
+                        if (rn == 0) {
+                            MoveUp(btn);
+                            return;
+                        } else {
+                            MoveDown(btn);
+                            return;
+                        }
+                    }
+                }
+                
+                //  3 possible directions
+                if (dirs == 3) {
+                    rn = (Math.abs(xorshift()) % 3);
+                    if (!blnLeft) {
+                        switch (rn) {
+                            case 0:
+                                MoveRight(btn);
+                                break;
+                            case 1:
+                                MoveUp(btn);
+                                break;
+                            case 2:
+                                MoveDown(btn);
+                                break;
+                        }
+                        return;
+                    }
+                    
+                    if (!blnRight) {
+                        switch (rn) {
+                            case 0:
+                                MoveLeft(btn);
+                                break;
+                            case 1:
+                                MoveUp(btn);
+                                break;
+                            case 2:
+                                MoveDown(btn);
+                                break;
+                        }
+                        return;
+                    }
+                    
+                    if (!blnTop) {
+                        switch (rn) {
+                            case 0:
+                                MoveLeft(btn);
+                                break;
+                            case 1:
+                                MoveRight(btn);
+                                break;
+                            case 2:
+                                MoveDown(btn);
+                                break;
+                        }
+                        return;
+                    }
+                    
+                    if (!blnBottom) {
+                        switch (rn) {
+                            case 0:
+                                MoveLeft(btn);
+                                break;
+                            case 1:
+                                MoveRight(btn);
+                                break;
+                            case 2:
+                                MoveUp(btn);
+                                break;
+                        }
+                        return;
+                    }
+                }
+                
+                // 4 possible directions
+                if (dirs == 4) {
+                    rn = (Math.abs(xorshift()) % 4);
+                    switch (rn) {
+                        case 0:
+                            MoveLeft(btn);
+                            break;
+                        case 1:
+                            MoveRight(btn);
+                            break;
+                        case 2:
+                            MoveUp(btn);
+                            break;
+                        case 3:
+                            MoveDown(btn);
+                            break;
+                    }
+                    return;
+                }
+            }    
+
+            // Get real time since session onset
+            function RealTime() {
+                return performance.now() - startTime;
+            }
+
+            // Make objects invisible
+            function removeObjects() {
+                leftPanel.style.display = 'none';
+                rightPanel.style.display = 'none';
+                scoreBoard.style.display = 'none';
+                imgBeach.classList.remove('appear');
+                imgStarLeft.style.display = 'none';
+                imgStarRight.style.display = 'none';
+                lblGainLeft.style.display = 'none';
+                lblGainRight.style.display = 'none';
+                lblLossLeft.style.display = 'none';
+                lblLossRight.style.display = 'none';
+            }
+
+            // Timers
+            function timer() {
+                if (flagTerminate) {
+                    removeObjects();
+                    window.location.replace("https://__________.com/terminated/"); // ***** Change this to your URL for the terminated page
+                } else {
+                    setTimeout(timer, 10);
+                    
+                    if (RealTime() > terminatePhase1 && targetRespCount == 0 && altRespCount == 0) {
+                        flagTerminate = 1;
+                    }
+                    
+                    if (!flagEndSession) {
+                        // Button motion
+                        if (performance.now() - intervalOnsetMotion >=  motionInterval) {
+                            intervalOnsetMotion = performance.now();
+                            
+                            btnmov(btnLeft, btnLeftMinX, btnLeftMaxX, btnLeftMinY, btnLeftMaxY)
+                            btnmov(btnRight, btnRightMinX, btnRightMaxX, btnRightMinY, btnRightMaxY)
+                            
+                            var rect = btnLeft.getBoundingClientRect();
+                            imgStarLeft.style.left = (rect.left + starOffsetX) + "px";
+                            imgStarLeft.style.top = (rect.top - starOffsetY) + "px";
+                            lblGainLeft.style.left = (rect.left + gainOffsetX) + "px";
+                            lblGainLeft.style.top = (rect.top - gainOffsetY) + "px";
+                            lblLossLeft.style.left = (rect.left + lossOffsetX) + "px";
+                            lblLossLeft.style.top = (rect.top + rect.height + lossOffsetY) + "px";
+                            
+                            rect = btnRight.getBoundingClientRect();
+                            imgStarRight.style.left = (rect.left + starOffsetX) + "px";
+                            imgStarRight.style.top = (rect.top - starOffsetY) + "px";
+                            lblGainRight.style.left = (rect.left + gainOffsetX) + "px";
+                            lblGainRight.style.top = (rect.top - gainOffsetY) + "px";
+                            lblLossRight.style.left = (rect.left + lossOffsetX) + "px";
+                            lblLossRight.style.top = (rect.top + rect.height + lossOffsetY) + "px";
+                        }
+                        
+                        if (!flagInitPhase1) {
+                            if (!flagEndPhase1) {
+                                // Phase 1
+                                if (performance.now() - intervalOnsetPeriod >=  intervalPeriodLength) {
+                                    intervalOnsetPeriod = performance.now();
+                                     
+                                    arrTargetRespCountPhase1.push(tmpTargetRespCount);
+                                    arrAltRespCountPhase1.push(tmpAltRespCount);
+                                    tmpTargetRespCount = 0;
+                                    tmpAltRespCount = 0;
+                                    
+                                    intervalCountPhase1++;
+                                    if (intervalCountPhase1 >= numIntervalsPhase1) {
+                                        flagEndPhase1 = 1;
+                                        EventMarker("30");
+                                        
+                                        if (reversal) { // 0 = no reversal; 1 = reversal
+                                            onsetVI = performance.now(); 
+                                            Value_Variable = 0; // Reset for Alt response in Phase 2
+                                            FleshlerHoffman(VI_Alt);
+                                        } else {
+                                            // Do nothing
+                                        }
+                                    }
+                                }
+                            } else {
+                                // Phase 2
+                                if (performance.now() - intervalOnsetPeriod >=  intervalPeriodLength) {
+                                    intervalOnsetPeriod = performance.now();
+                                    
+                                    arrTargetRespCountPhase2.push(tmpTargetRespCount);
+                                    arrAltRespCountPhase2.push(tmpAltRespCount);
+                                    tmpTargetRespCount = 0;
+                                    tmpAltRespCount = 0;
+                                    
+                                    intervalCountPhase2++;
+
+                                    if (intervalCountPhase2 >= numIntervalsPhase2) {
+                                        // End of session
+                                        EventMarker("99");
+                                        removeObjects();
+                                        btnSaveData.style.display = 'block';
+                                        lblMessage.style.display = 'block';
+                                        lblMessage.innerHTML = 'You completed the game portion of this HIT. Please press PROCEED.';
+                                        
+                                        dtE = new Date();
+                                        dtEnd.push(dtE.getFullYear());
+                                        dtEnd.push(dtE.getMonth() + 1);
+                                        dtEnd.push(dtE.getDate());
+                                        dtEnd.push(dtE.getHours());
+                                        dtEnd.push(dtE.getMinutes());
+                                        dtEnd.push(dtE.getSeconds());
+                                        
+                                        code = Math.abs(xorshift());
+                                        flagEndSession = 1;
+                                    }
+                                }
+                            }
+                        }
+                            
+                    } else {
+                        if (flagSaveButtonClick) {
+                            if (!flagDuringSave) {
+                                lblMessage.innerHTML = 'Please click the button again';
+                                btnSaveData.style.display = 'block';
+                                flagSaveButtonClick = 0;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Generate Fleshler & Hoffman's distribution for VI schedule
+            function FleshlerHoffman(Parameter) {
+                if (Value_Variable == n) {Value_Variable = 0; }
+                if (Value_Variable == 0) {
+                    v = Parameter * 1000;
+                    n = Iterations;
+                    rd.fill(0);
+                    vi.fill(0);
+                    
+                    for (var i = 1; i <= n; i++) {
+                        if (i == n) {
+                            vi[i] = Math.round(v * (1 + Math.log(n)));
+                        } else {
+                            vi[i] = Math.round(v * (1 + (Math.log(n)) + (n - i) * (Math.log(n - i)) - (n - i + 1) * Math.log(n - i + 1)));
+                        }
+                        do {
+                            order = Math.abs(xorshift()) % n;
+                        } while (rd[order] != 0);
+                        
+                        rd[order] = vi[i];
+                    }
+		            for (var a = 0; a <= n; a++) { 
+		                Sumxser = Sumxser + rd[a]; 
+		            }
+		            if (Sumxser != (v * n)) { rd[0] = rd[0] + ((v * n) - Sumxser); }
+		            Sumxser = 0;
+                } 
+            }
+
+            // xorshift random number generator
+            function xorshift() {
+                var t = seed[0] ^ (seed[0] << 11);
+                seed[0] = seed[1]; seed[1] = seed[2]; seed[2] = seed[3];
+                return seed[3] = (seed[3] ^ (seed[3] >>> 19)) ^ (t ^ (t >>> 8)); 
+            }
+            
+            // Set an initial set of seeds for xorshift random number generator, replacing default seeds
+            function init_xorshift(s) {
+            	for (var i = 0; i < 4; ++i) {
+            	    seed[i] = s = 1812433253 * (s ^ (s >> 30)) + i;
+            	}
+            }
+            
+            // Entry point of the program
+            function main() {
+                // Prevent workers from returning to this page after making unauthorized behavior
+                var flagBackpage1 = localStorage.getItem("flagBackpage1");
+                if (flagBackpage1 == null) {
+                    flagBackpage1 = 1;
+                    localStorage.setItem("flagBackpage1", flagBackpage1);
+                } else {
+                    window.location.replace("https://__________.com/backpage/"); // ***** Change this to your URL for the page after clicking the back page/refresh button
+                }
+                
+                init_xorshift(performance.now()*1000);
+                
+                // Retrieve ID and GROUP from the previous instruction page
+                // If missing, set values to these variables and save them on a web browser
+                var id = sessionStorage.getItem("ID");
+                var group = sessionStorage.getItem("GROUP");
+                if (id == null) {
+                    ID = -1;
+                    GROUP = (Math.abs(xorshift()) % 4) + 1;
+                    sessionStorage.setItem("ID", ID);
+                    sessionStorage.setItem("GROUP", GROUP);
+                } else {
+                    ID = Number(id);
+                    GROUP = Number(group);
+                }
+                //console.log("ID:" + ID); console.log("Group: " + GROUP);
+
+                switch (GROUP) {
+                    case 1: 
+                        targetSide = 0; // 0 = Left, 1 = Right
+                        reversal = 0; // 0 = no reversal; 1 = reversal
+                        break;
+                    case 2: 
+                        targetSide = 0;
+                        reversal = 1;
+                        break;
+                        
+                    case 3: 
+                        targetSide = 1;
+                        reversal = 0; 
+                        break;
+                    case 4: 
+                        targetSide = 1;
+                        reversal = 1;
+                        break;
+                }
+
+                // Set initial points
+                totalGain = initPoint;
+                netGain = totalGain - totalLoss;
+                
+                // Configure objects displayed on a monitor
+                document.body.style.minWidth = Width + "px";
+                document.body.style.minHeight = Height + "px";
+                
+                lblMessage.style.display = "none";
+                btnSaveData.style.display = "none";
+                
+                var rectLeftWorkplace = leftWorkplace.getBoundingClientRect();
+                leftPanel.style.left = (Width - rectLeftWorkplace.width)/ 2 - offsetMidline +"px";
+                leftPanel.style.top = (Height - rectLeftWorkplace.height)/ 2 + "px";
+                
+                var rectRightWorkplace = rightWorkplace.getBoundingClientRect();
+                rightPanel.style.left = (Width - rectRightWorkplace.width)/ 2 + offsetMidline + "px";
+                rightPanel.style.top = (Height - rectRightWorkplace.height)/ 2 + "px";
+                
+                var rectBtnLeft = btnLeft.getBoundingClientRect();
+                btnLeft.style.left =  rectLeftWorkplace.left + (rectLeftWorkplace.width - rectBtnLeft.width) / 2 + "px";
+                btnLeft.style.top = rectLeftWorkplace.top + (rectLeftWorkplace.height - rectBtnLeft.height) / 2 + "px";
+                
+                var rectBtnRight = btnRight.getBoundingClientRect();
+                btnRight.style.left = rectRightWorkplace.left + (rectRightWorkplace.width - rectBtnRight.width) / 2 + "px";
+                btnRight.style.top = rectRightWorkplace.top + (rectRightWorkplace.height - rectBtnRight.height) / 2 + "px";
+            
+                btnLeftMinX =  parseInt(btnLeft.style.left, 10) - adj;
+                btnLeftMaxX = parseInt(btnLeft.style.left, 10) + adj;
+                btnLeftMinY = parseInt(btnLeft.style.top, 10) - adj;
+                btnLeftMaxY = parseInt(btnLeft.style.top, 10) + adj;
+                btnRightMinX = parseInt(btnRight.style.left, 10) - adj;
+                btnRightMaxX = parseInt(btnRight.style.left, 10) + adj;
+                btnRightMinY = parseInt(btnRight.style.top, 10) - adj;
+                btnRightMaxY = parseInt(btnRight.style.top, 10) + adj;
+                
+                switch (Math.abs(xorshift()) % 2) {
+                    case 0:
+                        btnLeft.innerHTML = '<img src ="/wp-content/themes/luxech/images/heart.png">'; // ***** This assumes that you uploaded "heart.png" to the "images" directory under the directory for the Luxech theme
+                        btnRight.innerHTML = '<img src ="/wp-content/themes/luxech/images/club.png">'; // ***** This assumes that you uploaded "club.png" to the "images" directory under the directory for the Luxech theme
+                        symbol = 0;
+                        break;
+                    case 1:
+                        btnLeft.innerHTML = '<img src ="/wp-content/themes/luxech/images/club.png">'; // ***** This assumes that you uploaded "club.png" to the "images" directory under the directory for the Luxech theme
+                        btnRight.innerHTML = '<img src ="/wp-content/themes/luxech/images/heart.png">'; // ***** This assumes that you uploaded "heart.png" to the "images" directory under the directory for the Luxech theme
+                        symbol = 1;
+                        break;
+                }
+
+                var rect = btnLeft.getBoundingClientRect();
+                imgStarLeft.style.left = "0px";
+                imgStarLeft.style.top = "0px";
+                imgStarRight.style.left = "0px";
+                imgStarRight.style.top = "0px";
+                
+                lblGainLeft.style.left = "0px";
+                lblGainLeft.style.top = "0px";
+                lblGainLeft.style.color = "#00ff00"; // Green
+                lblGainRight.style.left = "0px";
+                lblGainRight.style.top = "0px";
+                lblGainRight.style.color = "#00ff00"; 
+                
+                lblLossLeft.style.left = "0px";
+                lblLossLeft.style.top = "0px";
+                lblLossLeft.style.color = "#ff0000"; // Red
+                
+                lblLossRight.style.left = "0px";
+                lblLossRight.style.top = "0px";
+                lblLossRight.style.color = "#ff0000"; 
+                
+                var rectPanel = leftPanel.getBoundingClientRect();
+                bottomPanel = rectPanel.top + rectLeftWorkplace.height;
+                
+                var rectBarPoint = barPoint.getBoundingClientRect();
+                barPoint.style.height = netGain / pixelRatio + "px";
+                barPoint.style.left = (Width - rectBarPoint.width) / 2 + "px";
+                barPoint.style.top = bottomPanel - netGain / pixelRatio + "px";
+                
+                lblBarPoint.style.left = (Width - rectBarPoint.width) / 2 + "px";
+                lblBarPoint.style.top = bottomPanel + "px";
+                lblBarPoint.innerHTML = "POINTS";
+                
+                var rectLblBarPoint = lblBarPoint.getBoundingClientRect();
+                lblDollar.style.left = rectLblBarPoint.right + 50 + "px";
+                lblDollar.style.top = bottomPanel + "px";
+                lblDollar.innerHTML = "US$ "+ (netGain * dollarPerPoint).toFixed(5);
+                
+                rectBarPoint = barPoint.getBoundingClientRect();
+                lblNetGain.style.left = (Width - rectBarPoint.width) / 2 + "px";
+                lblNetGain.style.top = bottomPanel - netGain / pixelRatio - 25 + "px";
+                lblNetGain.innerHTML = netGain;  
+                
+                leftWorkplace.style.zIndex = 0;
+                rightWorkplace.style.zIndex = 1;
+                btnLeft.style.zIndex = 2;
+                btnRight.style.zIndex = 3;
+                
+                // Display a background image
+                imgBeach.classList.add('appear');
+                
+                // Save date & time for session onset
+                dtSt = new Date();
+                dtStart.push(dtSt.getFullYear());
+                dtStart.push(dtSt.getMonth() + 1);
+                dtStart.push(dtSt.getDate());
+                dtStart.push(dtSt.getHours());
+                dtStart.push(dtSt.getMinutes());
+                dtStart.push(dtSt.getSeconds());
+
+                // Initialize VI for target response
+                FleshlerHoffman(VI_Target);
+                
+                // Prep for timers
+                startTime = performance.now();
+                intervalOnsetMotion = performance.now();
+
+                // Start timers
+                timer();
+            }
+            main();
+            
+        </script>
+       
+    </body>
+</html>
