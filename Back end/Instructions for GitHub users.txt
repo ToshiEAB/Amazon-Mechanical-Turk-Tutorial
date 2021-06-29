@@ -1,3 +1,21 @@
+<Instructions>
+Upload each file/folder to your server like the following directory tree:
+
+/home/username/______.com/public_html/wp-content/themes/luxech
+
+home
+ |- username
+   |- ______.com
+     |- public_html
+       |- wp-content
+         |- themes
+           |- luxech
+             |- images
+             |  |- 
+             |- random-assignment
+             |  |- 
+
+<Notes>
 In our original paper, we uploaded all of the files/folders here to the directory for the Luxech theme installed on our server. 
 All the URLs in .php files here assume that is the case. Thus, you have to replace these URLs. 
 Look for 5-consecutive asterisks (i.e., *****) for the URLs you need to replace.
