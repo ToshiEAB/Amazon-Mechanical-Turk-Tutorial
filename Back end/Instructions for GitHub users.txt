@@ -10,7 +10,7 @@ home
        |- wp-content
          |- themes
            |- luxech
-             |- images
+             |- images                     # Create a new folder
              |  |- beach.png
              |  |- club.png
              |  |- desert.jpg
@@ -21,9 +21,12 @@ home
              |  |- sampleConsentForm.pdf
              |  |- snow_scene.jpg
              |  |- star_pt.png
-             |- random-assignment
+             |- random-assignment         # Create a new folder
              |  |- getRandomNumber.php
              |  |- list.txt
+             |- results                   # Create a new folder
+             |  |- RawData                # Create a new folder (This is where session data files will be stored. But see below for saving them more securely.)
+             |  |- Survey                 # Create a new folder (This is where survey data files will be stored. But see below for saving them more securely.)
              |- SaveDataFile.php
              |- SaveSurveyData.php
              |- customTemplate.php
@@ -37,6 +40,3 @@ Look for 5-consecutive asterisks (i.e., *****) for the URLs you need to replace.
 <IMPORTANT>
 You should save session- and survey-data files in a secure location on your server.
 For details, read Step 11 in Appendix A in our paper titled "A Tutorial for Developing Customizable Systems for Conducting Operant Experiments Online with Amazon Mechanical Turk".
-
-
- 
