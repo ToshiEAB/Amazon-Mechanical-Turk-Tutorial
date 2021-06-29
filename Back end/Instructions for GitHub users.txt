@@ -11,7 +11,16 @@ home
          |- themes
            |- luxech
              |- images
-             |  |- 
+             |  |- beach.png
+             |  |- club.png
+             |  |- desert.jpg
+             |  |- field.jpg
+             |  |- heart.png
+             |  |- hourglass.gif
+             |  |- mountain.jpg
+             |  |- sampleConsentForm.pdf
+             |  |- snow_scene.jpg
+             |  |- star_pt.png
              |- random-assignment
              |  |- getRandomNumber.php
              |  |- list.txt
