@@ -13,7 +13,8 @@ home
              |- images
              |  |- 
              |- random-assignment
-             |  |- 
+             |  |- getRandomNumber.php
+             |  |- list.txt
              |- SaveDataFile.php
              |- SaveSurveyData.php
              |- customTemplate.php
