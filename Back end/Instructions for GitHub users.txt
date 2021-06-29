@@ -1,7 +1,6 @@
 <Instructions>
-Upload each file/folder to your server like the following directory tree:
-
-/home/username/______.com/public_html/wp-content/themes/luxech
+Assuming that you have the directory/URL like /home/username/______.com/public_html/wp-content/themes/luxech
+upload each file/folder included in this "Back end" folder to your server like the following directory tree:
 
 home
  |- username
@@ -10,7 +9,7 @@ home
        |- wp-content
          |- themes
            |- luxech
-             |- images                     # Create a new folder
+             |- images                     # Create a new directory/folder
              |  |- beach.png
              |  |- club.png
              |  |- desert.jpg
@@ -21,12 +20,12 @@ home
              |  |- sampleConsentForm.pdf
              |  |- snow_scene.jpg
              |  |- star_pt.png
-             |- random-assignment         # Create a new folder
+             |- random-assignment         # Create a new directory/folder
              |  |- getRandomNumber.php
              |  |- list.txt
-             |- results                   # Create a new folder
-             |  |- RawData                # Create a new folder (This is where session data files will be stored. But see below for saving them more securely.)
-             |  |- Survey                 # Create a new folder (This is where survey data files will be stored. But see below for saving them more securely.)
+             |- results                   # Create a new directory/folder
+             |  |- RawData                # Create a new directory/folder (This is where session data files will be stored. But see below for saving them more securely.)
+             |  |- Survey                 # Create a new directory/folder (This is where survey data files will be stored. But see below for saving them more securely.)
              |- SaveDataFile.php
              |- SaveSurveyData.php
              |- customTemplate.php
