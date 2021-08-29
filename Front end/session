@@ -117,7 +117,8 @@
                 margin : 0px auto;
                 width: 100%;
                 height: 100%;
-                background: url(/wp-content/themes/luxech/images/beach.jpg); // ***** This assumes that you uploaded "beach.jpg" to the "images" directory under the directory for the Luxech theme
+                /* ***** Assumes that you uploaded "beach.jpg" to the "images" directory under the directory for the Luxech theme*/
+                background: url(/wp-content/themes/luxech/images/beach.jpg); 
                 background-size: cover;
                 background-repeat: no-repeat;
                 display: none;
@@ -212,7 +213,20 @@
         </div>
         
         <script>
-             "use strict";
+            "use strict";
+             
+            // URLs (***** Change the following URLs to match your domain name. Also change the URLs in the CSS codes above if any)
+            const URL_page_endofsession = 'https://_________.com/endofsession/'; // Page immediately after session
+            const URL_page_terminated = 'https://_________.com/terminated/'; // Page when no response occurs in the first X sec
+            const URL_page_backpage = 'https://_________.com/backpage/'; // Page when trying to re-enter the session page
+            
+            // The following URL assumes that you uploaded relevant files to the "images" directory under the directory for the Luxech theme
+            const URL_image_heart = '<img src ="/wp-content/themes/luxech/images/heart.png">'; 
+            const URL_image_club = '<img src ="/wp-content/themes/luxech/images/club.png">'; 
+            const URL_image_star = '<img src ="/wp-content/themes/luxech/images/star_pt.png">';
+            
+            // The following URL assumes that you uploaded relevant files to the directory for the Luxech theme
+            const URL_php_savedatafile = '/wp-content/themes/luxech/SaveDataFile.php';
             
             // Objects
             const leftPanel = document.getElementById('leftPanel');
@@ -299,6 +313,16 @@
             // 17: Reinforcement on the right side
             // 30: End of Phase 1
             // 99: End of session
+            
+            // Thread
+            const thread = `
+                onmessage = function timer() {
+                    postMessage("e"); 
+                    setTimeout(timer, 10); }
+            `;
+            const blob = new Blob([thread]);
+            const blobURL = URL.createObjectURL(blob);
+            const tickTock = new Worker(blobURL); 
 
             // Flags
             var flagInitPhase1 = 1; 
@@ -380,7 +404,7 @@
                 
                 $.ajax({
                     type: "POST",
-                    url: "/wp-content/themes/luxech/SaveDataFile.php", // ***** This assumes that you uploaded "SaveDataFile.php" to under the directory for the Luxech theme
+                    url: URL_php_savedatafile,
                     data: {
                         "ID": ID,
                         "GROUP": GROUP,
@@ -419,6 +443,7 @@
                         "reversal": reversal
                     },
                     success: function(filecount) {
+                        tickTock.terminate();
                         sessionStorage.setItem("filecount", filecount);
                         sessionStorage.setItem("ID", ID);
                         sessionStorage.setItem("GROUP", GROUP);
@@ -426,7 +451,7 @@
                         sessionStorage.setItem("basePay", basePay);
                         sessionStorage.setItem("netGain", netGain);
                         sessionStorage.setItem("dollarPerPoint", dollarPerPoint);
-                        window.location.replace("https://_________.com/endofsession/"); // ***** Change this to your URL for an end-of-session page
+                        window.location.replace(URL_page_endofsession);
                     },
                     error: function() {
                         flagDuringSave = 0;
@@ -494,7 +519,7 @@
                     $('#lblGainLeft').fadeOut(400);
                     
                     $('#imgStarLeft').show();
-                    imgStarLeft.innerHTML = '<img src ="/wp-content/themes/luxech/images/star_pt.png">'; // ***** This assumes that you uploaded "start_pt.png" to the "images" directory under the directory for the Luxech theme
+                    imgStarLeft.innerHTML = URL_image_star;
                     $('#imgStarLeft').fadeOut(400);
                 } else {
                     EventMarker("17");
@@ -503,7 +528,7 @@
                     $('#lblGainRight').fadeOut(400);
                     
                     $('#imgStarRight').show();
-                    imgStarRight.innerHTML = '<img src ="/wp-content/themes/luxech/images/star_pt.png">'; // ***** This assumes that you uploaded "start_pt.png" to the "images" directory under the directory for the Luxech theme
+                    imgStarRight.innerHTML = URL_image_star;
                     $('#imgStarRight').fadeOut(400);
                 }
                 flashGreen();
@@ -989,12 +1014,11 @@
             }
 
             // Timers
-            function timer() {
+            tickTock.onmessage = function() {
                 if (flagTerminate) {
                     removeObjects();
-                    window.location.replace("https://__________.com/terminated/"); // ***** Change this to your URL for the terminated page
+                    window.location.replace(URL_page_terminated);
                 } else {
-                    setTimeout(timer, 10);
                     
                     if (RealTime() > terminatePhase1 && targetRespCount == 0 && altRespCount == 0) {
                         flagTerminate = 1;
@@ -1148,7 +1172,7 @@
                     flagBackpage1 = 1;
                     localStorage.setItem("flagBackpage1", flagBackpage1);
                 } else {
-                    window.location.replace("https://__________.com/backpage/"); // ***** Change this to your URL for the page after clicking the back page/refresh button
+                    window.location.replace(URL_page_backpage);
                 }
                 
                 init_xorshift(performance.now()*1000);
@@ -1226,13 +1250,13 @@
                 
                 switch (Math.abs(xorshift()) % 2) {
                     case 0:
-                        btnLeft.innerHTML = '<img src ="/wp-content/themes/luxech/images/heart.png">'; // ***** This assumes that you uploaded "heart.png" to the "images" directory under the directory for the Luxech theme
-                        btnRight.innerHTML = '<img src ="/wp-content/themes/luxech/images/club.png">'; // ***** This assumes that you uploaded "club.png" to the "images" directory under the directory for the Luxech theme
+                        btnLeft.innerHTML = URL_image_heart;
+                        btnRight.innerHTML = URL_image_club;
                         symbol = 0;
                         break;
                     case 1:
-                        btnLeft.innerHTML = '<img src ="/wp-content/themes/luxech/images/club.png">'; // ***** This assumes that you uploaded "club.png" to the "images" directory under the directory for the Luxech theme
-                        btnRight.innerHTML = '<img src ="/wp-content/themes/luxech/images/heart.png">'; // ***** This assumes that you uploaded "heart.png" to the "images" directory under the directory for the Luxech theme
+                        btnLeft.innerHTML = URL_image_club;
+                        btnRight.innerHTML = URL_image_heart;
                         symbol = 1;
                         break;
                 }
@@ -1304,8 +1328,8 @@
                 startTime = performance.now();
                 intervalOnsetMotion = performance.now();
 
-                // Start timers
-                timer();
+                // Start timer
+                tickTock.postMessage("start");
             }
             main();
             
