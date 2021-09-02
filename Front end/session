@@ -588,6 +588,8 @@
                     intervalOnsetPeriod = performance.now();
                     
                     onsetVI = performance.now();
+                    tmpTargetRespCount = 0;
+                    tmpAltRespCount = 0;
                     flagInitPhase1 = 0;
                     
                 } else {
