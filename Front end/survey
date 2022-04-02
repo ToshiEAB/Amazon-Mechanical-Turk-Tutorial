@@ -228,6 +228,12 @@
         <script>
             "use strict";
             
+            // URLs (***** Change the following URLs to match your domain name. Also change the URLs in the CSS codes above if any)
+            const URL_webpage_lastpage = 'https://___________.com/last/'; // Final page
+            
+            // ***** This URL assumes that you uploaded "SaveSurveyData.php" under the directory for the Luxech theme
+            const URL_php_savesurveydatafile = '/wp-content/themes/luxech/SaveSurveyData.php'; 
+            
             // Screen size
             const scWidth = window.parent.screen.width;
             const scHeight = window.parent.screen.height - 200;
@@ -501,7 +507,7 @@
                         // Call a PHP function
                         $.ajax({
                             type: "POST",
-                            url: "/wp-content/themes/luxech/SaveSurveyData.php", // ***** This URL assumes that you uploaded "SaveSurveyData.php" under the directory for the Luxech theme)
+                            url: URL_php_savesurveydatafile,
                             data: {
                                 "filecount": filecount,
                                 "ID": ID,
@@ -530,9 +536,7 @@
                                 "a19": a19
                             },
                             success: function(data) {
-                                sessionStorage.setItem("dollar", dollar); 
-                                sessionStorage.setItem("code", code);                       
-                                window.location.replace("https://___________.com/last/"); // ***** Change this to your URL for the last page
+                                window.location.replace(URL_webpage_lastpage);
                             },
                             error: function(data) {
                                 flagDuringSave = 0;
