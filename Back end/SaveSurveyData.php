@@ -27,12 +27,21 @@ $a17 = $_POST['a17'];
 $a18 = $_POST['a18'];
 $a19 = $_POST['a19'];
 
+// Remove line-break code (i.e., "\n", "\r", "\r\n"), an illegal code for file name, that might be added automatically at some point
+$filecount = str_replace(array("\n", "\r", "\r\n"), '', $filecount);
+$group = str_replace(array("\n", "\r", "\r\n"), '', $group);
+
+// Set the current working directory 
+$directory = getcwd() ."/results/Survey/"; // ***** Change this to a directory/folder in which you wanna save survey-data files. This sample directory is unsafe, actually. See Step 11 in Appendix A of our paper for better security.
+
+// Create a /results/RawData/ directory if it does not exist
+if (!is_dir($directory)) {
+    mkdir($directory, 0700, true); // see permission levels at https://chmodcommand.com/chmod-700/
+}
 
 // Save a text data file on this server computer
 $filename = "Participant" . str_pad($filecount, 3, 0, STR_PAD_LEFT) . "-" . $group . "-Survey";
-
-$filepath = "/home/username/_________.com/public_html/wp-content/themes/luxech/results/Survey/" . $filename . ".txt"; // ***** Change this to your URL where you wanna save survey-data files. This sample directory is unsafe, actually. See Step 11 in Appendix A of our paper for better security.
-
+$filepath = $directory . $filename . ".txt";
 
 $f = fopen($filepath, 'w');
 
@@ -42,7 +51,6 @@ fwrite($f, "ID: " . $ID . "\n");
 fwrite($f, "Group: " . $group . "\n");
 fwrite($f, "code: " . $code . "\n");
 fwrite($f, "Dollar: " . $dollar . "\n");
-fwrite($f, "Email sent: " . $mailSent . "\n");
 fwrite($f, "\n");
 fwrite($f, "Q1: " . $a1 . "\n");
 fwrite($f, "Q2: " . $a2 . "\n");
