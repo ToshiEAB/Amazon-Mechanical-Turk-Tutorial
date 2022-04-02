@@ -216,9 +216,9 @@
             "use strict";
              
             // URLs (***** Change the following URLs to match your domain name. Also change the URLs in the CSS codes above if any)
-            const URL_page_endofsession = 'https://_________.com/endofsession/'; // Page immediately after session
-            const URL_page_terminated = 'https://_________.com/terminated/'; // Page when no response occurs in the first X sec
-            const URL_page_backpage = 'https://_________.com/backpage/'; // Page when trying to re-enter the session page
+            const URL_webpage_endofsession = 'https://_________.com/endofsession/'; // Page immediately after session
+            const URL_webpage_terminated = 'https://_________.com/terminated/'; // Page when no response occurs in the first X sec
+            const URL_webpage_backpage = 'https://_________.com/backpage/'; // Page when trying to re-enter the session page
             
             // The following URL assumes that you uploaded relevant files to the "images" directory under the directory for the Luxech theme
             const URL_image_heart = '<img src ="/wp-content/themes/luxech/images/heart.png">'; 
@@ -451,7 +451,22 @@
                         sessionStorage.setItem("basePay", basePay);
                         sessionStorage.setItem("netGain", netGain);
                         sessionStorage.setItem("dollarPerPoint", dollarPerPoint);
-                        window.location.replace(URL_page_endofsession);
+
+                        var dollar = netGain * dollarPerPoint + basePay;
+                        dollar = dollar.toFixed(2); // Decimal points of 2 (string)
+                        sessionStorage.setItem("dollar", dollar);
+                        
+                        function delay(msec){
+                            return new Promise(function(resolve){
+                                    setTimeout(resolve, msec);
+                                });
+                        }
+                        async function wait(msec){
+                            await delay(msec);
+                            window.location.replace(URL_webpage_endofsession);
+                        }
+                        wait(500); // 0.5-s delay for having enough time to store data with sessionStorage.setItem
+
                     },
                     error: function() {
                         flagDuringSave = 0;
@@ -1019,7 +1034,7 @@
             tickTock.onmessage = function() {
                 if (flagTerminate) {
                     removeObjects();
-                    window.location.replace(URL_page_terminated);
+                    window.location.replace(URL_webpage_terminated);
                 } else {
                     
                     if (RealTime() > terminatePhase1 && targetRespCount == 0 && altRespCount == 0) {
@@ -1174,7 +1189,7 @@
                     flagBackpage1 = 1;
                     localStorage.setItem("flagBackpage1", flagBackpage1);
                 } else {
-                    window.location.replace(URL_page_backpage);
+                    window.location.replace(URL_webpage_backpage);
                 }
                 
                 init_xorshift(performance.now()*1000);
