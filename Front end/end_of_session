@@ -28,14 +28,13 @@
         <script>
             "use strict";
             
+            // URLs (***** Change the following URLs to match your domain name. Also change the URLs in the CSS codes above if any)
+            const URL_webpage_survey = 'https://___________.com/survey/'; // URL for a survey page
+            
             // Screen size
             const scWidth = window.parent.screen.width;
             const scHeight = window.parent.screen.height - 200;
             
-            var filecount = 0;
-            var ID = 0;
-            var GROUP = 0;
-            var code = 0;
             var basePay = 0;
             var netGain = 0;
             var dollarPerPoint = 0;
@@ -48,36 +47,11 @@
             var proceed = document.getElementById('proceed');
             
             proceed.addEventListener('mousedown',function() {
-                sessionStorage.setItem("filecount", filecount);
-                sessionStorage.setItem("ID", ID);
-                sessionStorage.setItem("GROUP", GROUP);
-                sessionStorage.setItem("dollar", dollar); 
-                sessionStorage.setItem("code", code); 
-                window.location.replace("https:___________.com/survey/"); // ***** Change this to your URL for a survey page)
+                window.location.replace(URL_webpage_survey);
             });
             
             function showPage() {
-
-                filecount = sessionStorage.getItem("filecount");
-                if (filecount == null) {
-                    filecount = 0;
-                }
-                
-                ID = sessionStorage.getItem("ID");
-                if (ID == null) {
-                    ID = -1;
-                }
-                
-                GROUP = sessionStorage.getItem("GROUP");
-                if (GROUP == null) {
-                    GROUP = -1;
-                }
-                
-                code = sessionStorage.getItem("code");
-                if (code == null) {
-                    code = 0;
-                }
-                
+               
                 basePay = sessionStorage.getItem("basePay");
                 if (basePay == null) {
                     basePay = 0;
@@ -88,15 +62,24 @@
                 netGain = sessionStorage.getItem("netGain");
                 if (netGain == null) {
                     netGain = 0;
+                } else {
+                    netGain = parseFloat(netGain);
                 }
                 
                 dollarPerPoint = sessionStorage.getItem("dollarPerPoint");
                 if (dollarPerPoint == null) {
                     dollarPerPoint = 0;
+                } else {
+                    dollarPerPoint = parseFloat(dollarPerPoint);
+                }
+
+                dollar = sessionStorage.getItem("dollar");
+                if (dollar == null) {
+                    dollar = 0;
+                } else {
+                    dollar = parseFloat(dollar);
                 }
                 
-                dollar = netGain * dollarPerPoint + basePay;
-                dollar = dollar.toFixed(2); // Decimal points of 2
                 var bP = basePay.toFixed(2);
                 var pD = netGain * dollarPerPoint;
                 pD = pD.toFixed(2);
