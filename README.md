@@ -8,3 +8,4 @@ You have to replace URLs in each source code with those that match your server a
 Updates
 2021-8-29: I revised the "session" file to make it easier for readers/uders to change URLs. They are located in the same place instead of being scattered all over the place. I also revised the file for a more accurate timer.
 
+2022-4-2: I revised several JavaScript files for preventing potential bugs
