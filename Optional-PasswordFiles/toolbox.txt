@@ -1,0 +1,389 @@
+SNIPPET TITLE: set-passwordsHTML
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Password Creation Page</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap">
+	<style>
+		body {
+			font-family: 'Roboto', sans-serif;
+			background-color: #f7f7f7;
+			color: #333333;
+			margin: 0;
+			padding: 0;
+		}
+
+		.container {
+			max-width: 600px;
+			margin: 0 auto;
+			padding: 2rem;
+			background-color: #ffffff;
+			box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+			border-radius: 10px;
+		}
+
+		h2 {
+			text-align: center;
+			font-size: 2.5rem;
+			margin-bottom: 2rem;
+		}
+
+		form {
+			display: flex;
+			flex-direction: column;
+			align-items: flex-start;
+			justify-content: center;
+		}
+
+		label {
+			display: block;
+			margin-bottom: 0.5rem;
+			font-size: 2rem;
+		}
+
+		input[type="password"],
+		input[type="number"],
+		input[type="button"] {
+			width: 100%;
+			padding: 0.5rem;
+			border-radius: 5px;
+			border: none;
+			margin-bottom: 1rem;
+			font-size: 1rem;
+			box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.1);
+		}
+
+		input[type="button"] {
+			background-color: #2196f3;
+			color: #ffffff;
+			cursor: pointer;
+			transition: background-color 0.3s ease;
+		}
+
+		input[type="button"]:hover {
+			background-color: #0d8beb;
+		}
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+	<div class="container">
+		<h2>Create a Password</h2>
+		<form>
+			<label for="password">Password:</label>
+			<input type="password" id="password" name="password" required>
+			<label for="validity">Number of times password can be used:</label>
+			<input type="number" id="validity" name="validity" min="1" required>
+			<div id="form-message"></div>
+			<input type="button" value="Submit" onclick="submitForm()">
+		</form>
+	</div>
+
+
+SNIPPET TITLE: set-passwordsJS
+
+<script>
+		function submitForm() {
+			// Get the form data
+			var password = $('#password').val();
+			var validity = $('#validity').val();
+			const API_URL = "/wp-content/themes/luxech/store_password.php";
+			// Send the form data to the PHP script using AJAX
+			$.ajax({
+				type: 'POST',
+				url: API_URL,
+				data: {
+					password: password,
+					validity: validity
+				},
+				success: function(response) {
+					// Redirect the user to a confirmation page
+					console.log(response);
+					if (response.includes("Error")) {
+					    $('#form-message').html(`<p class="error">An error occurred while storing the password. ${response}</p>`)
+					} else {
+					    $('#password').val('');
+			            $('#validity').val('');
+					    $('#form-message').html(`<p class="success">Password successfully added, '${password}' will be valid for ${validity} uses.</p>`);
+					}
+					
+				},
+				error: function(xhr, status, error) {
+					// Handle any errors
+					console.log("error", JSON.stringify(xhr));
+					$('#form-message').html(`<p class="error">An error occurred while submitting the form. Please try again later. ERROR: ${error.message}</p>`);
+				}
+			});
+		}
+	</script>
+
+
+SNIPPET TITLE: log-inHTML
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    </head>
+ <body>
+     <div id="container" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+     <h1>Log-In</h1>
+        <div>
+             <input style="margin-top: 10px;" type='text' id='email' placeholder='Email' class='email-input'>
+              <br />
+              <input style="border: 1px solid #ddd; margin-top: 10px; padding: 12px 12px 11px;" type='password' id='password' placeholder='Password'><br>
+              <br />
+              <button id="logInButton">Submit</button>
+        </div>
+    </div>
+
+
+SNIPPET TITLE: log-inJS
+
+<script>
+    $(document).ready(function() {
+        var params = new URLSearchParams(window.location.search);
+        // Check if the noemail parameter is set to true
+        if (params.get('noemail') === 'true') {
+            // Hide the email input field
+            $('.email-input').hide();
+        }
+    })
+
+    const postCreds = (e) => {
+        e.preventDefault();
+        let emailVerification = true;
+        var newParams = new URLSearchParams(window.location.search);
+        // Check if the noemail parameter is set to true
+        if (newParams.get('noemail') === 'true') {
+            // Hide the email input field
+            emailVerification = false;
+        }
+        
+        // Delete previous error messages (if any)
+        let errors = document.getElementsByClassName("error-msg");
+        while(errors[0]) {
+            errors[0].parentNode.removeChild(errors[0]);
+        }
+        
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const params = new Proxy(new URLSearchParams(window.location.search), {
+            get: (searchParams, prop) => searchParams.get(prop),
+        });
+        const {referrer} = params;
+        
+        
+        $.ajax({
+        type: 'POST',
+        url: `/wp-content/themes/luxech/authenticate-participant${!emailVerification ? '-passonly' : ''}.php`,
+        data: { 
+            email,
+            password,
+            referrer,
+        },
+        success: (res) => {
+          let response = JSON.parse(res);
+          console.log(response);
+          if (response.authenticated) {
+              sessionStorage.setItem('auth', true);
+              window.location.href = response.referrer;
+          } else {
+              sessionStorage.setItem('auth', false);
+              let errMsg = document.createElement("p");
+              errMsg.className = "error-msg";
+              errMsg.setAttribute("style", "color:red;padding-top:5px;")
+              errMsg.innerText = response.err;
+              document.getElementById("container").appendChild(errMsg);
+          }
+          
+        },
+        error: (err) => {
+            console.log(JSON.stringify(err))
+          sessionStorage.setItem('auth', false);
+          let errMsg = document.createElement("p");
+          errMsg.innerText = err;
+          errMsg.className = "error-msg";
+          errMsg.setAttribute("style", "color:red;padding-top:5px;")
+          document.getElementById("container").appendChild(errMsg);
+        }
+      })
+    }
+    
+    let logInButton = document.getElementById('logInButton');
+    logInButton.onclick = postCreds;
+    
+    
+</script>
+</body>
+</html>
+
+
+SNIPPET TITLE: authenticate-PASSONLY
+
+<script>
+/*
+ Created by: Matthew Lamperski
+ Last Edited: 04.06.23
+ 
+ Add this to any for which a participant's access needs to be
+ authenticated by PASSWORD ONLY (usually with MTurk). It will redirect the participant to the "/login" page,
+ which will only redirect them back to where they were trying to access in the first place.
+*/
+
+
+    let auth = sessionStorage.getItem("auth");
+    if (auth !== "true") {
+        const params = new URLSearchParams();
+        params.set('noemail', true);
+        params.set('referrer', window.location.href);
+        window.location = `https://your_url.com/login?${params.toString()}`; // Replace with your URL
+    }
+    
+</script>
+</body>
+</html>
+
+
+SNIPPET TITLE: authenticate-EMAIL
+
+<script>
+/*
+ Created by: Matthew Lamperski
+ Last Edited: 03.14.23
+ 
+ Add this to any for which a participant's access needs to be
+ authenticated. It will redirect the participant to the "/login" page,
+ which will only redirect them back to where they were trying to access in the first place.
+*/
+
+
+    let auth = sessionStorage.getItem("auth");
+    if (auth !== "true") {
+        window.location = `https://your_url.com/login?referrer=${window.location.href}`; // Replace with your URL
+    }
+    
+</script>
+</body>
+</html>
+
+
+SNIPPET TITLE: send-passwordsHTML
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Send Passwords</title>
+</head>
+<body>
+    
+    <div id="root" style="padding: 20px; display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start">
+        <h3>Upload file below to send out passwords.</h3>
+        <input type="file" id="participant-info">
+    </div>
+  
+
+SNIPPET TITLE: send-passwordsJS
+
+<script>
+const API_URL = "/wp-content/themes/luxech/notify-participants.php";
+let participants = [];
+let participantInfo = document.getElementById("participant-info");
+let root = document.getElementById("root");
+
+const notifyParticipantsOfPasswords = async () => {
+    let sendButton = document.getElementById("send-button");
+    sendButton.innerText = "Sending...";
+    sendButton.disabled = true;
+    const res = await fetch(API_URL, {
+        body: JSON.stringify({participants}),
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+    const {status} = await res.json()
+    console.log(status);
+
+    // Show if error
+    let passwordErrors = status.filter(participantStatus => participantStatus.password_saved !== "Successfully saved password");
+    if (passwordErrors.length !== 0) {
+        passwordErrors.forEach(participantStatus => {
+            let errMsg = document.createElement("p");
+            errMsg.innerText = `[ERROR] ${participantStatus.email} encountered an error when saving password: ${participantStatus.password_saved}.`
+            root.removeChild(sendButton);
+            root.appendChild(errMsg);
+        })
+    }
+
+    let emailErrors = status
+        .filter(participantStatus => participantStatus.email_success !== true)
+        .filter(partError => !passwordErrors.some(partStatus => partStatus.email !== partError.email));
+    if (emailErrors.length !== 0) {
+        emailErrors.forEach(participantStatus => {
+            let errMsg = document.createElement("p");
+            errMsg.innerText = `[ERROR] ${participantStatus.email} encountered an error when sending email...`
+            root.removeChild(sendButton);
+            root.appendChild(errMsg);
+        })
+    }
+
+    if (passwordErrors.length === 0 && emailErrors.length === 0) {
+        let successMsg = document.createElement("h4");
+        successMsg.innerText = "Successfully sent all emails and set passwords Reload to restart.";
+        root.removeChild(sendButton);
+        root.appendChild(successMsg);
+    }
+}
+
+participantInfo.onchange = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onload = async () => {
+        let lines = reader.result.split('\n');
+        let firstNameIdx = 0, lastNameIdx = 0, emailIdx = 0;
+        let lineStartIdx = 0;
+
+        // First get the correct indexes
+        for (let currLine of lines) {
+            if (currLine.includes("first_name") && currLine.includes("last_name") && currLine.includes("email")) {
+                lineStartIdx = lines.indexOf(currLine);
+                let columns = currLine.split(",");
+
+                firstNameIdx = columns.indexOf("first_name");
+                lastNameIdx = columns.indexOf("last_name");
+                emailIdx = columns.indexOf("email");
+                break;
+            }
+        }
+
+        // Then create an array of participants
+        participants = lines.slice(lineStartIdx + 1).map(participantLine => ({
+            first_name: participantLine.split(",")[firstNameIdx],
+            last_name: participantLine.split(",")[lastNameIdx],
+            email: participantLine.split(",")[emailIdx],
+        }))
+            .filter(participant => participant.first_name.length !== 0 && participant.last_name !== 0);
+
+        // Add button to submit
+        let sendButton = document.createElement("button");
+        sendButton.innerText = `Set Passwords for ${participants.length} participants.`
+        sendButton.onclick = notifyParticipantsOfPasswords;
+        sendButton.id = "send-button";
+        root.appendChild(sendButton);
+    }
+    reader.readAsText(file);
+}
+
+
+</script>
+</body>
+</html>
+
+
+
