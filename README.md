@@ -2,7 +2,7 @@
 
 # Source codes herein are for the following manuscript:
 
-"A Tutorial for Developing Customizable Online Systems for Conducting Operant Experiments".
+"A Customizable Online System for Conducting Operant Experiments" (under review)
 
 # How to use
 The "Front end" folder includes source codes written in JavaScript and CSS in the HTML format whereas the "Back end" folder includes source codes written in PHP. You should upload the former source codes to your WordPress dashboard and the latter ones to your server. For details, check "Instructions for GitHub users.txt" in each of the folders.
